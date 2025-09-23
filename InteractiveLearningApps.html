@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Learning Apps</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        .filter-btn.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .view-btn.active {
+            background-color: #fff;
+            color: #2563eb;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .card-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .list-view .card-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .list-view .card-image-wrapper {
+            flex-shrink: 0;
+            width: 8rem;
+            height: 8rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            border-right: 1px solid #e5e7eb;
+        }
+        .list-view .card-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2">Interactive Learning Apps</h1>
+            <p class="text-lg text-slate-600">Filter by category and grade level to find the perfect learning app.</p>
+        </header>
+
+        <div id="controls-bar" class="mb-10 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-sm font-semibold text-slate-700 self-center mr-2">Category:</span>
+                    <div id="category-filter-container" class="flex flex-wrap gap-2"></div>
+                </div>
+                <div id="view-toggle" class="flex items-center gap-1 p-1 bg-slate-200 rounded-lg">
+                    <button id="grid-view-btn" class="view-btn p-2 rounded-md transition-colors" aria-label="Grid View">
+                        <i data-lucide="layout-grid" class="h-5 w-5"></i>
+                    </button>
+                    <button id="list-view-btn" class="view-btn p-2 rounded-md transition-colors" aria-label="List View">
+                         <i data-lucide="list" class="h-5 w-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <span class="text-sm font-semibold text-slate-700 self-center mr-2">Grade Level:</span>
+                <div id="grade-filter-container" class="flex flex-wrap gap-2"></div>
+            </div>
+        </div>
+
+        <main>
+            <div id="cards-container"></div>
+        </main>
+    </div>
+
+<script>
+    const cardsData = <?!= JSON.stringify(cards) ?>;
+
+    const controlsBar = document.getElementById('controls-bar');
+    const categoryFilterContainer = document.getElementById('category-filter-container');
+    const gradeFilterContainer = document.getElementById('grade-filter-container');
+    const cardsContainer = document.getElementById('cards-container');
+    const gridViewBtn = document.getElementById('grid-view-btn');
+    const listViewBtn = document.getElementById('list-view-btn');
+
+    let activeCategory = 'All';
+    let activeGrade = 'All';
+
+    function createCardHTML(card) {
+        return `
+            <a href="${card.url}" target="_blank" rel="noopener noreferrer"
+               class="card-item group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out overflow-hidden relative"
+               data-category="${card.category}"
+               data-grade="${card.gradeLevel}">
+
+                <div class="card-image-wrapper h-48 flex items-center justify-center p-6 bg-slate-100 rounded-t-lg">
+                    <img src="${card.image}" alt="${card.title}" class="object-contain max-h-full w-auto transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
+                </div>
+                <div class="card-content p-6">
+                    <h2 class="text-xl font-semibold mb-2 text-slate-800">${card.title}</h2>
+                    <p class="text-slate-600 text-sm mb-3">${card.description}</p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        ${card.category ? `<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded">${card.category}</span>` : ''}
+                        ${card.gradeLevel ? `<span class="px-2 py-1 bg-green-100 text-green-700 rounded">${card.gradeLevel}</span>` : ''}
+                    </div>
+                </div>
+            </a>
+        `;
+    }
+
+    function renderCards() {
+        let cardsHTML = '';
+        const filteredCards = cardsData.filter(card => {
+            const categoryMatch = activeCategory === 'All' || card.category === activeCategory;
+            const gradeMatch = activeGrade === 'All' || card.gradeLevel === activeGrade;
+            return categoryMatch && gradeMatch;
+        });
+
+        filteredCards.forEach(card => {
+            cardsHTML += createCardHTML(card);
+        });
+
+        if (filteredCards.length === 0 && cardsData.length > 0) {
+            cardsHTML = `<p class="text-slate-500 col-span-full text-center">No apps match your selected filters.</p>`;
+        }
+
+        cardsContainer.innerHTML = cardsHTML;
+    }
+
+    function setupFilters() {
+        const categories = ['All', ...new Set(cardsData.map(card => card.category).filter(c => c))];
+        const grades = ['All', ...new Set(cardsData.map(card => card.gradeLevel).filter(g => g))];
+
+        let categoryHTML = '';
+        categories.forEach(category => {
+            categoryHTML += `<button class="filter-btn ${category === 'All' ? 'active' : ''}" data-filter="${category}">${category}</button>`;
+        });
+        categoryFilterContainer.innerHTML = categoryHTML;
+
+        let gradeHTML = '';
+        grades.forEach(grade => {
+            gradeHTML += `<button class="filter-btn ${grade === 'All' ? 'active' : ''}" data-filter="${grade}">${grade}</button>`;
+        });
+        gradeFilterContainer.innerHTML = gradeHTML;
+
+        categoryFilterContainer.addEventListener('click', e => {
+            if (e.target.tagName !== 'BUTTON') return;
+            document.querySelectorAll('#category-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            activeCategory = e.target.dataset.filter;
+            renderCards();
+        });
+
+        gradeFilterContainer.addEventListener('click', e => {
+            if (e.target.tagName !== 'BUTTON') return;
+            document.querySelectorAll('#grade-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            activeGrade = e.target.dataset.filter;
+            renderCards();
+        });
+    }
+
+    function setView(view) {
+        if (view === 'list') {
+            cardsContainer.className = 'list-view';
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            localStorage.setItem('preferredView', 'list');
+        } else {
+            cardsContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8';
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            localStorage.setItem('preferredView', 'grid');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!cardsData || !Array.isArray(cardsData) || cardsData.length === 0) {
+            cardsContainer.innerHTML = '<p class="text-slate-500 col-span-full text-center">No apps to display. Add data to your "Interactive Learning Apps" Google Sheet.</p>';
+            if(controlsBar) {
+                controlsBar.style.display = 'none';
+            }
+            if (cardsData && !Array.isArray(cardsData)) {
+                console.error("Data received from server is not an array:", cardsData);
+            }
+            return;
+        }
+
+        setupFilters();
+
+        const preferredView = localStorage.getItem('preferredView') || 'grid';
+        setView(preferredView);
+
+        renderCards();
+
+        gridViewBtn.addEventListener('click', () => setView('grid'));
+        listViewBtn.addEventListener('click', () => setView('list'));
+
+        lucide.createIcons();
+    });
+</script>
+
+</body>
+</html>

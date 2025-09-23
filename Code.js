@@ -12,6 +12,11 @@ function doGet(e) {
     return showLandingPage();
   }
 
+  // The 'interactivelearningapps' page has a special function because its data structure is unique.
+  if (pageParameter === 'interactivelearningapps') {
+    return showInteractiveLearningAppsPage();
+  }
+
   // For all other pages, use the generic page builder.
   return showGenericPage(pageParameter);
 }
@@ -83,7 +88,7 @@ function showLandingPage() {
     if (pageParameter) {
       finalUrl = `${webAppUrl}?page=${pageParameter}`;
     }
-    
+
     return {
       title: row[0],
       description: row[1],
@@ -96,9 +101,39 @@ function showLandingPage() {
 
   const template = HtmlService.createTemplateFromFile('LandingPage');
   template.cards = cardsData;
-  
+
   return template.evaluate()
     .setTitle('Welcome')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function showInteractiveLearningAppsPage() {
+  const sheetName = 'Interactive Learning Apps';
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
+  if (!sheet) {
+    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`);
+  }
+
+  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6);
+  const values = dataRange.getValues();
+
+  const cardsData = values.map(function(row) {
+    return {
+      title: row[0],
+      description: row[1],
+      category: row[2],
+      gradeLevel: row[3],
+      image: convertGoogleDriveUrl(row[4]),
+      url: row[5]
+    };
+  }).filter(row => row.title && row.url);
+
+  const template = HtmlService.createTemplateFromFile('InteractiveLearningApps');
+  template.cards = cardsData;
+
+  return template.evaluate()
+    .setTitle('Interactive Learning Apps')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
