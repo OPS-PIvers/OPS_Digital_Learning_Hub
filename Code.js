@@ -118,12 +118,47 @@ function showInteractiveLearningAppsPage() {
   const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6);
   const values = dataRange.getValues();
 
+  function mapGradeToRange(grade) {
+    const gradeStr = String(grade).toUpperCase().trim();
+    const ranges = [];
+
+    if (gradeStr === 'K' || gradeStr === '1' || gradeStr === '2') {
+      ranges.push('K-2');
+    }
+    if (gradeStr === '3' || gradeStr === '4' || gradeStr === '5') {
+      ranges.push('3-5');
+    }
+    if (gradeStr === '6' || gradeStr === '7' || gradeStr === '8') {
+      ranges.push('6-8');
+    }
+    if (gradeStr === '9' || gradeStr === '10' || gradeStr === '11' || gradeStr === '12') {
+      ranges.push('9-12');
+    }
+
+    return ranges;
+  }
+
   const cardsData = values.map(function(row) {
+    const gradeLevelString = row[3] ? String(row[3]).trim() : '';
+    const gradeArray = gradeLevelString ? gradeLevelString.split(',').map(g => g.trim()) : [];
+
+    const gradeRanges = [];
+    gradeArray.forEach(function(grade) {
+      const ranges = mapGradeToRange(grade);
+      ranges.forEach(function(range) {
+        if (!gradeRanges.includes(range)) {
+          gradeRanges.push(range);
+        }
+      });
+    });
+
     return {
       title: row[0],
       description: row[1],
       category: row[2],
-      gradeLevel: row[3],
+      gradeLevel: gradeLevelString,
+      gradeArray: gradeArray,
+      gradeRanges: gradeRanges,
       image: convertGoogleDriveUrl(row[4]),
       url: row[5]
     };
