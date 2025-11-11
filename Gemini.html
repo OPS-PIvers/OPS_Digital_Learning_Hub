@@ -7,7 +7,7 @@
     <title>Gemini Tools - Digital Learning Hub</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link crossorigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <style>
@@ -97,8 +97,6 @@
                         <a class="text-white/80 hover:text-white text-base font-normal leading-normal"
                             href="#">Contact Us</a>
                     </div>
-                    <div class="flex flex-wrap justify-center gap-4 mt-6">
-                    </div>
                     <p class="text-white/60 text-sm font-normal leading-normal mt-6">© 2024 Digital Learning Hub. All
                         Rights Reserved.</p>
                 </div>
@@ -111,12 +109,12 @@
         function createCardHTML(card) {
             return `
                 <div class="flex flex-col gap-4 bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" data-alt="${card.title}" style='background-image: url("${card.image}");'></div>
+                    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" role="img" aria-label="${card.title}" style='background-image: url("${card.image}");'></div>
                     <div class="flex flex-col gap-3 flex-grow">
                         <h2 class="text-brand-primary text-xl font-bold">${card.title}</h2>
                         <p class="text-brand-text-body dark:text-gray-300 text-base font-normal leading-relaxed flex-grow">${card.description}</p>
                     </div>
-                    <a href="${card.url}" target="_blank" class="flex mt-2 min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-brand-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+                    <a href="${card.url}" target="_blank" rel="noopener noreferrer" class="flex mt-2 min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-brand-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
                         <span class="truncate">Learn More</span>
                     </a>
                 </div>

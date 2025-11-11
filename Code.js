@@ -17,53 +17,8 @@ function doGet(e) {
     return showInteractiveLearningAppsPage();
   }
 
-  if (pageParameter === 'gemini') {
-    return showGeminiPage();
-  }
-
   // For all other pages, use the generic page builder.
   return showGenericPage(pageParameter);
-}
-
-/**
- * Builds and returns the HTML for the Gemini Tools page.
- */
-function showGeminiPage() {
-  const sheetName = 'Gemini';
-  const htmlFileName = 'Gemini';
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-
-  if (!sheet) {
-    // Provide a more specific error message if the sheet is missing.
-    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found. Please create it to hold the Gemini tools card data.`);
-  }
-
-  // Assumes a 4-column layout: Title, Description, Image, URL
-  // We read from row 2 to the last row with content.
-  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
-  const values = dataRange.getValues();
-
-  const cardsData = values.map(function(row) {
-    return {
-      title: row[0],
-      description: row[1],
-      image: convertGoogleDriveUrl(row[2]),
-      url: row[3]
-    };
-  }).filter(row => row.title && row.url); // Ensure that cards have a title and URL to be displayed
-
-  try {
-    const template = HtmlService.createTemplateFromFile(htmlFileName);
-    template.cardsData = cardsData;
-
-    return template.evaluate()
-      .setTitle('Gemini Tools')
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-  } catch (error) {
-    // Log the actual error for debugging purposes.
-    console.error('Error loading Gemini template:', error);
-    return HtmlService.createHtmlOutput(`Error: The HTML template "${htmlFileName}.html" was not found.`);
-  }
 }
 
 /**
@@ -86,7 +41,17 @@ function showGenericPage(pageParameter) {
 
   // Assumes a standard 4-column layout for all generic card pages.
   // (Title, Description, Image, URL)
-  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    // If there are no data rows, return an empty array to the template.
+    // The template should handle the case where cardsData is empty.
+    const template = HtmlService.createTemplateFromFile(htmlFileName);
+    template.cardsData = [];
+    return template.evaluate()
+      .setTitle(sheetName)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
+  const dataRange = sheet.getRange(2, 1, lastRow - 1, 4);
   const values = dataRange.getValues();
 
   const cardsData = values.map(function(row) {
