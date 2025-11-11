@@ -32,6 +32,7 @@ function showGenericPage(pageParameter) {
   const sheetName = pageParameter.charAt(0).toUpperCase() + pageParameter.slice(1);
   // 2. Convert parameter to HTML File Name (e.g., "gems" -> "Gems.html")
   const htmlFileName = sheetName; // Assumes HTML file is named "Gems.html", "Staff.html", etc.
+  const webAppUrl = ScriptApp.getService().getUrl();
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
@@ -67,6 +68,7 @@ function showGenericPage(pageParameter) {
   try {
     const template = HtmlService.createTemplateFromFile(htmlFileName);
     template.cardsData = cardsData; // Generic name for data passed to template
+    template.webAppUrl = webAppUrl;
     
     return template.evaluate()
       .setTitle(sheetName)

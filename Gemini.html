@@ -14,6 +14,11 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+        [aria-disabled="true"] {
+            cursor: not-allowed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
     <script id="tailwind-config">
         tailwind.config = {
@@ -56,22 +61,24 @@
                         </h2>
                     </div>
                     <nav class="hidden md:flex items-center gap-9">
-                        <a class="text-white/80 dark:text-gray-200 text-sm font-medium leading-normal hover:text-white"
+                        <a id="home-link" class="text-white/80 dark:text-gray-200 text-sm font-medium leading-normal hover:text-white"
                             href="#">Home</a>
                         <a class="text-white/80 dark:text-gray-200 text-sm font-medium leading-normal hover:text-white"
-                            href="#">Courses</a>
+                            href="#" aria-disabled="true" tabindex="-1">Courses</a>
                         <a class="text-white text-sm font-bold leading-normal" href="#">Gemini Tools</a>
                         <a class="text-white/80 dark:text-gray-200 text-sm font-medium leading-normal hover:text-white"
-                            href="#">About</a>
+                            href="#" aria-disabled="true" tabindex="-1">About</a>
                     </nav>
                 </div>
                 <div class="flex flex-1 justify-end gap-2">
                     <button
-                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-white text-sm font-bold leading-normal tracking-[0.015em] border-2 border-white hover:bg-white/10 transition-colors">
+                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-white text-sm font-bold leading-normal tracking-[0.015em] border-2 border-white hover:bg-white/10 transition-colors"
+                        aria-disabled="true" tabindex="-1">
                         <span class="truncate">Log In</span>
                     </button>
                     <button
-                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white text-brand-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-white/90 transition-colors">
+                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white text-brand-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-white/90 transition-colors"
+                        aria-disabled="true" tabindex="-1">
                         <span class="truncate">Sign Up</span>
                     </button>
                 </div>
@@ -105,16 +112,28 @@
     </div>
     <script>
         const cardsData = <?!= JSON.stringify(cardsData) ?>;
+        const webAppUrl = <?!= JSON.stringify(webAppUrl) ?>;
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
         function createCardHTML(card) {
+            const title = escapeHtml(card.title);
+            const description = escapeHtml(card.description);
+            const image = escapeHtml(card.image);
+            const url = escapeHtml(card.url);
+
             return `
                 <div class="flex flex-col gap-4 bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" role="img" aria-label="${card.title}" style='background-image: url("${card.image}");'></div>
+                    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" role="img" aria-label="${title}" style='background-image: url("${image}");'></div>
                     <div class="flex flex-col gap-3 flex-grow">
-                        <h2 class="text-brand-primary text-xl font-bold">${card.title}</h2>
-                        <p class="text-brand-text-body dark:text-gray-300 text-base font-normal leading-relaxed flex-grow">${card.description}</p>
+                        <h2 class="text-brand-primary text-xl font-bold">${title}</h2>
+                        <p class="text-brand-text-body dark:text-gray-300 text-base font-normal leading-relaxed flex-grow">${description}</p>
                     </div>
-                    <a href="${card.url}" target="_blank" rel="noopener noreferrer" class="flex mt-2 min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-brand-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="flex mt-2 min-w-[84px] w-full sm:w-auto max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-brand-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
                         <span class="truncate">Learn More</span>
                     </a>
                 </div>
@@ -132,6 +151,10 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             renderCards();
+            const homeLink = document.getElementById('home-link');
+            if (homeLink && webAppUrl) {
+                homeLink.href = webAppUrl;
+            }
         });
     </script>
 </body>
