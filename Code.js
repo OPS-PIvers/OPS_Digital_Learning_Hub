@@ -29,33 +29,28 @@ function doGet(e) {
  * Builds and returns the HTML for the Gemini Tools page.
  */
 function showGeminiPage() {
+  const sheetName = 'Gemini';
   const htmlFileName = 'Gemini';
-  const cardsData = [
-    {
-      title: 'Creating Gems',
-      description: "An overview of the 'Gems' feature, what they are, and their primary use cases. Click to learn more.",
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB3S-E9X-TWkYWPwY2lQ6LA5VSH6b6rfTUemz89sSSeIWabP3lQNebBUUQeoTjUfUfofNPhxdN3mxLp0jXqm8FHh39Zipw9sd4_F4PTio-LZocnTyo7VzR0qR6eiw38JYlROGjl4w3cZhKmVnvKkuLZ1WGL-6UCG1WjfgrZnowxFiV-v7WiVs4-E0CpZX-KApStntGBxHzX9E9V0MM96Pd_PcjTvBXeSjlBAOlBOMrKHH1BkdqDZs4yIc78q6xQYtzAEdTYu3318ssi',
-      url: '?page=gems'
-    },
-    {
-      title: 'Using the Canvas tool to create interactive learning apps',
-      description: 'Introduction to the Canvas tool for building engaging educational applications. Click to learn more.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDnmxUbuyEKMqcy10mjEGMlzGClm5Tn4HwJqMn8dGN9RFjNe_BMfxutBVNHOn4D2EO1B2WkPX15CQtWNCtjDsaBIL4p6nE_Aos0cJaub6SwCcJrnBo_RJZMujI4ClbWHt1fdnCWCkaXlDYU8_m2VgagLDYJyrTpscEvzF3dfLyj5MTevy2sgIavg1ufma9rbnGCcFkIpFOc8o1sxGDvhBErf5-96vWF8F0nrrSMkmSK9NOc35MzwrXDmty6IiU_wVf6sQqjm63i-C7R',
-      url: '?page=interactivelearningapps'
-    },
-    {
-      title: 'Creating and Exporting Google Slides',
-      description: 'Guide on how to generate and export presentations directly to Google Slides. Click to learn more.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDhibkPEYDNv5xFAfEgKqQ4LXAKtuOjRjtw0JC7uszVAWb9kryp-xRQZhQWzb5ff2zwD_oMM3SKvB02fgZGaco7osuCCCe8xF58pcuNgHS5JNKQ-86axIE7LFatKX_mkdCS5-mqvaWboo7LFeL--G3uq4eZ_u-2wRlRsEBqj8o2aHqITpU0HYsVJsyCau2xCiWIIImda9NYSKLVlhNNRZRh-9WQzveEX0Q_RhSjZJTM0xzBi2aR2Fm8mYyEFhKFNot5HyXFD_LS20ko',
-      url: '#'
-    },
-    {
-      title: 'Editing pictures with Nano Banana',
-      description: "A look into the 'Nano Banana' feature for quick and powerful image editing. Click to learn more.",
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuALzlxvH_eQ3AnF6YWQ1LP66LrW4txlmX6rjJwEW6Xm-oPXe1mtIrX7P_beOMDjZRqsUotsFGbF1Smwca1W8yPUOOLzTOhOfeCth4D2J0qTKdP65qJBfLjaOVoD6eM1Q0k14YONxfd8BpkVBugGR6aNhcfdX8o2DzD1z_QUU8KMdHJfvMYtVtLtTCLGOH01ci8HnvvLdKvNPleP2wtX4EYTzxvATiLCl04yZ7eQjKggfyErgYuX6BFhyLeXnrdTwabDfg6mp2sMMOY5',
-      url: '#'
-    }
-  ];
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
+  if (!sheet) {
+    // Provide a more specific error message if the sheet is missing.
+    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found. Please create it to hold the Gemini tools card data.`);
+  }
+
+  // Assumes a 4-column layout: Title, Description, Image, URL
+  // We read from row 2 to the last row with content.
+  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
+  const values = dataRange.getValues();
+
+  const cardsData = values.map(function(row) {
+    return {
+      title: row[0],
+      description: row[1],
+      image: convertGoogleDriveUrl(row[2]),
+      url: row[3]
+    };
+  }).filter(row => row.title && row.url); // Ensure that cards have a title and URL to be displayed
 
   try {
     const template = HtmlService.createTemplateFromFile(htmlFileName);
