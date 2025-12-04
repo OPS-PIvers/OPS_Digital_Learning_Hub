@@ -32,6 +32,7 @@ function showGenericPage(pageParameter) {
   const sheetName = pageParameter.charAt(0).toUpperCase() + pageParameter.slice(1);
   // 2. Convert parameter to HTML File Name (e.g., "gems" -> "Gems.html")
   const htmlFileName = sheetName; // Assumes HTML file is named "Gems.html", "Staff.html", etc.
+  const webAppUrl = ScriptApp.getService().getUrl();
 
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
@@ -41,7 +42,17 @@ function showGenericPage(pageParameter) {
 
   // Assumes a standard 4-column layout for all generic card pages.
   // (Title, Description, Image, URL)
-  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    // If there are no data rows, return an empty array to the template.
+    // The template should handle the case where cardsData is empty.
+    const template = HtmlService.createTemplateFromFile(htmlFileName);
+    template.cardsData = [];
+    return template.evaluate()
+      .setTitle(sheetName)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
+  const dataRange = sheet.getRange(2, 1, lastRow - 1, 4);
   const values = dataRange.getValues();
 
   const cardsData = values.map(function(row) {
@@ -57,6 +68,7 @@ function showGenericPage(pageParameter) {
   try {
     const template = HtmlService.createTemplateFromFile(htmlFileName);
     template.cardsData = cardsData; // Generic name for data passed to template
+    template.webAppUrl = webAppUrl;
     
     return template.evaluate()
       .setTitle(sheetName)
