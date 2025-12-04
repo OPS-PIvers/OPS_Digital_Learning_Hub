@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Links | Landing Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
+    <?!= include('Stylesheet'); ?>
 </head>
-<body class="bg-slate-50 text-gray-800">
+
+<body class="bg-ops-gray-lightest text-ops-gray-body">
 
     <div class="container mx-auto px-4 py-12 md:py-20">
 
         <!-- Header Section -->
         <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2">OPS Gem Collection</h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">Click on a card below to use the premade Gem.</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-ops-primary mb-2">OPS Gem Collection</h1>
+            <p class="text-lg text-ops-gray-primary max-w-2xl mx-auto">Click on a card below to use the premade Gem.</p>
         </header>
 
         <!-- Cards Grid -->
@@ -28,20 +24,28 @@
 
                 <!-- This is a scriptlet loop. It will repeat for each row in your Google Sheet. -->
                 <? for (var i = 0; i < cardsData.length; i++) { ?>
-                <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer" class="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out overflow-hidden">
+                <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer"
+                    class="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out overflow-hidden">
                     <div class="relative">
-                        <img src="<?= cardsData[i].image ?>" alt="<?= cardsData[i].title ?>" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
+                        <img src="<?= cardsData[i].image ?>" alt="<?= cardsData[i].title ?>"
+                            class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
                     </div>
                     <div class="p-6">
-                        <h2 class="text-xl font-semibold mb-2 text-slate-800"><?= cardsData[i].title ?></h2>
-                        <p class="text-slate-600 text-sm"><?= cardsData[i].description ?></p>
+                        <h2 class="text-xl font-semibold mb-2 text-ops-primary">
+                            <?= cardsData[i].title ?>
+                        </h2>
+                        <p class="text-ops-gray-primary text-sm">
+                            <?= cardsData[i].description ?>
+                        </p>
                     </div>
                 </a>
                 <? } ?>
-                
+
                 <!-- This message will show if your sheet is empty. -->
                 <? if (cardsData.length === 0) { ?>
-                  <p class="text-slate-500 col-span-full text-center">No cards to display. Add data to your "Cards" Google Sheet to get started.</p>
+                <p class="text-ops-gray-light col-span-full text-center">No cards to display. Add data to your "Cards"
+                    Google Sheet to get started.</p>
                 <? } ?>
 
             </div>
@@ -50,4 +54,5 @@
     </div>
 
 </body>
+
 </html>

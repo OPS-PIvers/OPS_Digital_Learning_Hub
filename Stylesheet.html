@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Lexend -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lexend', 'sans-serif'],
+                    },
+                    colors: {
+                        ops: {
+                            // Blue Variations
+                            primary: '#2d3f89',
+                            dark: '#1d2a5d',
+                            light: '#4356a0',
+                            lighter: '#eaecf5',
+                            // Red Variations
+                            red: {
+                                primary: '#ad2122',
+                                dark: '#7a1718',
+                                light: '#c13435',
+                                lighter: '#e5c7c7',
+                            },
+                            // Gray Scale
+                            gray: {
+                                darkest: '#333333',
+                                primary: '#666666',
+                                light: '#999999',
+                                lighter: '#CCCCCC',
+                                lightest: '#f3f3f3',
+                                body: '#555555',
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            color: #555555; /* ops-gray-body */
+            background-color: #f3f3f3; /* ops-gray-lightest */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #2d3f89; /* ops-primary */
+        }
+        
+        /* Custom Scrollbar for Webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ccc; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999; 
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
