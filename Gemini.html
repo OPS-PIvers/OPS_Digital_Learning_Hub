@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Tools | Digital Learning Hub</title>
+    <?!= include('Stylesheet'); ?>
+</head>
+
+<body class="bg-ops-gray-lightest text-ops-gray-body">
+
+    <div class="container mx-auto px-4 py-12 md:py-20">
+
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <img src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/OPS Tech Logo 2.png"
+                 alt="OPS Tech Logo"
+                 class="mx-auto mb-4 h-16 md:h-20 w-auto">
+            <h1 class="text-4xl md:text-5xl font-bold text-ops-primary mb-4">Mastering the Gemini Toolkit</h1>
+            <p class="text-lg text-ops-gray-primary max-w-3xl mx-auto">A clear and inviting gateway for users to explore various functionalities of the Gemini toolset. Dive into our modules below to enhance your skills.</p>
+        </header>
+
+        <!-- Cards Grid -->
+        <main>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+
+                <!-- This is a scriptlet loop. It will repeat for each card in the data. -->
+                <? for (var i = 0; i < cardsData.length; i++) { ?>
+                <div class="flex flex-col bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                    <!-- Card Image -->
+                    <div class="relative">
+                        <img src="<?= cardsData[i].image ?>" alt="<?= cardsData[i].title ?>"
+                            class="w-full h-48 object-cover"
+                            onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
+                    </div>
+                    <!-- Card Content -->
+                    <div class="flex flex-col flex-grow p-6">
+                        <h2 class="text-xl font-bold text-ops-primary mb-3">
+                            <?= cardsData[i].title ?>
+                        </h2>
+                        <p class="text-ops-gray-primary text-base leading-relaxed mb-4 flex-grow">
+                            <?= cardsData[i].description ?>
+                        </p>
+                        <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center justify-center px-6 py-3 bg-ops-primary text-white font-semibold rounded-lg hover:bg-ops-dark transition-colors duration-200">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <? } ?>
+
+                <!-- This message will show if the sheet is empty. -->
+                <? if (cardsData.length === 0) { ?>
+                <p class="text-ops-gray-light col-span-full text-center text-lg">No Gemini tools available yet. Add data to your "Gemini" Google Sheet to get started.</p>
+                <? } ?>
+
+            </div>
+        </main>
+
+    </div>
+
+</body>
+
+</html>

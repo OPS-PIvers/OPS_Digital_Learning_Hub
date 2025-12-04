@@ -41,23 +41,28 @@ function showGenericPage(pageParameter) {
 
   // Assumes a standard 4-column layout for all generic card pages.
   // (Title, Description, Image, URL)
-  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 4);
-  const values = dataRange.getValues();
+  const lastRow = sheet.getLastRow();
+  let cardsData = [];
 
-  const cardsData = values.map(function(row) {
-    return {
-      title: row[0],
-      description: row[1],
-      image: convertGoogleDriveUrl(row[2]),
-      url: row[3]
-    };
-  }).filter(row => row.title && row.url);
+  if (lastRow > 1) {
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, 4);
+    const values = dataRange.getValues();
+
+    cardsData = values.map(function(row) {
+      return {
+        title: row[0],
+        description: row[1],
+        image: convertGoogleDriveUrl(row[2]),
+        url: row[3]
+      };
+    }).filter(row => row.title && row.url);
+  }
 
   // Dynamically create the template from the determined file name.
   try {
     const template = HtmlService.createTemplateFromFile(htmlFileName);
     template.cardsData = cardsData; // Generic name for data passed to template
-    
+
     return template.evaluate()
       .setTitle(sheetName)
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
