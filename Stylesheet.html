@@ -74,75 +74,8 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #999;
         }
-
-        /* Loading Screen Styles */
-        #ops-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #2d3f89 0%, #ad2122 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.5s ease-out;
-        }
-
-        #ops-loader.loaded {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #ops-loader video {
-            max-width: 300px;
-            width: 80%;
-            height: auto;
-        }
-
-        /* Hide loader if page loads very quickly (< 300ms) */
-        body.quick-load #ops-loader {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="ops-loader">
-        <video autoplay loop muted playsinline>
-            <source src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS Tech Loader.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <script>
-        // Track load time to hide loader on quick loads
-        const loadStartTime = Date.now();
-
-        // Hide loader when page is fully loaded
-        window.addEventListener('load', function() {
-            const loadTime = Date.now() - loadStartTime;
-            const loader = document.getElementById('ops-loader');
-
-            // If page loaded very quickly (< 300ms), hide immediately without animation
-            if (loadTime < 300) {
-                document.body.classList.add('quick-load');
-            } else {
-                // Otherwise, fade out smoothly
-                setTimeout(function() {
-                    loader.classList.add('loaded');
-                }, 100);
-            }
-        });
-
-        // Fallback: Always hide loader after 10 seconds (in case something goes wrong)
-        setTimeout(function() {
-            const loader = document.getElementById('ops-loader');
-            if (loader) {
-                loader.classList.add('loaded');
-            }
-        }, 10000);
-    </script>
 </body>
 </html>
