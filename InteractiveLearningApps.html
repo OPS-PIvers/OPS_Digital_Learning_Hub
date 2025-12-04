@@ -127,7 +127,7 @@
                     <p class="text-ops-gray-primary text-sm mb-3">${card.description}</p>
                     <div class="flex flex-wrap gap-2 text-xs">
                         ${card.category ? `<span class="px-2 py-1 bg-ops-lighter text-ops-primary rounded">${card.category}</span>` : ''}
-                        ${card.gradeLevel ? `<span class="px-2 py-1 bg-green-100 text-green-700 rounded">${card.gradeLevel}</span>` : ''}
+                        ${card.gradeRanges ? card.gradeRanges.map(range => `<span class="px-2 py-1 bg-green-100 text-green-700 rounded">${range}</span>`).join('') : ''}
                     </div>
                 </div>
             </a>
