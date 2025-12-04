@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <?!= include('Stylesheet'); ?>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: transparent; /* Makes the background see-through */
+            background-color: transparent;
+            /* Makes the background see-through */
         }
-        
+
         /* -- Filter Styles -- */
         .filter-btn {
             padding-bottom: 8px;
             border-bottom: 2px solid transparent;
             transition: all 0.2s ease-in-out;
         }
+
         .filter-btn.active {
-            color: #2563eb; /* text-blue-600 */
-            border-bottom-color: #2563eb; /* border-blue-600 */
+            color: #2d3f89;
+            /* ops-primary */
+            border-bottom-color: #2d3f89;
+            /* ops-primary */
         }
-        
+
         /* -- View Toggle Styles -- */
         .view-btn.active {
             background-color: #fff;
-            color: #2563eb;
+            color: #2d3f89;
+            /* ops-primary */
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
 
@@ -40,20 +43,28 @@
         .list-view {
             display: flex;
             flex-direction: column;
-            gap: 1rem; /* space-y-4 */
+            gap: 1rem;
+            /* space-y-4 */
         }
+
         .list-view .card-item {
             display: flex;
             flex-direction: row;
             align-items: center;
         }
+
         .list-view .card-image-wrapper {
             flex-shrink: 0;
-            width: 8rem; /* w-32 */
-            height: 8rem; /* h-32 */
-            border-radius: 0.5rem 0 0 0.5rem; /* rounded-l-lg */
-            border-right: 1px solid #e5e7eb; /* border-r */
+            width: 8rem;
+            /* w-32 */
+            height: 8rem;
+            /* h-32 */
+            border-radius: 0.5rem 0 0 0.5rem;
+            /* rounded-l-lg */
+            border-right: 1px solid #e5e7eb;
+            /* border-r */
         }
+
         .list-view .card-content {
             display: flex;
             flex-direction: column;
@@ -65,10 +76,12 @@
             position: absolute;
             top: -1px;
             right: 12px;
-            background-color: #2563eb; /* bg-blue-600 */
+            background-color: #2d3f89;
+            /* ops-primary */
             color: white;
             padding: 4px 10px;
-            font-size: 0.75rem; /* 12px */
+            font-size: 0.75rem;
+            /* 12px */
             font-weight: 600;
             border-radius: 0 0 0.5rem 0.5rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -76,29 +89,31 @@
         }
     </style>
 </head>
-<body class="text-gray-800">
+
+<body class="text-ops-gray-body">
 
     <div class="container mx-auto px-4 py-12">
 
         <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-800 mb-2">Welcome to the Digital Learning Hub</h1>
-            <p class="text-lg text-slate-600">Select a resource below to get started.</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-ops-primary mb-2">Welcome to the Digital Learning Hub</h1>
+            <p class="text-lg text-ops-gray-primary">Select a resource below to get started.</p>
         </header>
 
         <!-- Controls: Filters + View Toggle -->
         <div id="controls-bar" class="flex flex-col sm:flex-row justify-between items-center mb-10 gap-6">
             <!-- Filter Buttons -->
-            <div id="filter-container" class="flex flex-wrap justify-center sm:justify-start items-center gap-x-8 gap-y-3 text-slate-600 font-medium">
+            <div id="filter-container"
+                class="flex flex-wrap justify-center sm:justify-start items-center gap-x-8 gap-y-3 text-ops-gray-primary font-medium">
                 <!-- Buttons injected by JS -->
             </div>
             <!-- View Toggle -->
-            <div id="view-toggle" class="flex items-center gap-1 p-1 bg-slate-200 rounded-lg">
+            <div id="view-toggle" class="flex items-center gap-1 p-1 bg-ops-gray-lighter rounded-lg">
                 <button id="grid-view-btn" class="view-btn p-2 rounded-md transition-colors" aria-label="Grid View">
                     <i data-lucide="layout-grid" class="h-5 w-5"></i>
                 </button>
                 <button id="list-view-btn" class="view-btn p-2 rounded-md transition-colors" aria-label="List View">
-                     <i data-lucide="list" class="h-5 w-5"></i>
+                    <i data-lucide="list" class="h-5 w-5"></i>
                 </button>
             </div>
         </div>
@@ -111,134 +126,134 @@
         </main>
     </div>
 
-<script>
-    // Pass Apps Script data to a browser-side variable using a non-escaping scriptlet.
-    const cardsData = <?!= JSON.stringify(cards) ?>;
+    <script>
+        // Pass Apps Script data to a browser-side variable using a non-escaping scriptlet.
+        const cardsData = <?!= JSON.stringify(cards) ?>;
 
-    // --- DOM Elements ---
-    const controlsBar = document.getElementById('controls-bar');
-    const filterContainer = document.getElementById('filter-container');
-    const cardsContainer = document.getElementById('cards-container');
-    const gridViewBtn = document.getElementById('grid-view-btn');
-    const listViewBtn = document.getElementById('list-view-btn');
-    
-    // --- Card Template Function ---
-    // Creates the HTML for a single card. This makes rendering easier.
-    function createCardHTML(card) {
-        let cardClasses = 'shadow-md';
-        let highlightMarkup = '';
+        // --- DOM Elements ---
+        const controlsBar = document.getElementById('controls-bar');
+        const filterContainer = document.getElementById('filter-container');
+        const cardsContainer = document.getElementById('cards-container');
+        const gridViewBtn = document.getElementById('grid-view-btn');
+        const listViewBtn = document.getElementById('list-view-btn');
 
-        if (card.highlight) {
-            // Apply a stronger ring and a more prominent shadow
-            cardClasses = 'ring-4 ring-blue-500 shadow-2xl'; 
-            // Add the banner HTML
-            highlightMarkup = '<div class="featured-banner">Featured</div>';
-        }
+        // --- Card Template Function ---
+        // Creates the HTML for a single card. This makes rendering easier.
+        function createCardHTML(card) {
+            let cardClasses = 'shadow-md';
+            let highlightMarkup = '';
 
-        return `
+            if (card.highlight) {
+                // Apply a stronger ring and a more prominent shadow
+                cardClasses = 'ring-4 ring-ops-blue-light shadow-2xl';
+                // Add the banner HTML
+                highlightMarkup = '<div class="featured-banner">Featured</div>';
+            }
+
+            return `
             <a href="${card.url}" target="_blank" rel="noopener noreferrer" 
                class="card-item group block bg-white rounded-lg hover:shadow-2xl relative ${cardClasses}"
                data-category="${card.category}">
                 
                 ${highlightMarkup}
                 
-                <div class="card-image-wrapper h-48 flex items-center justify-center p-6 bg-slate-100 rounded-t-lg">
+                <div class="card-image-wrapper h-48 flex items-center justify-center p-6 bg-ops-gray-lightest rounded-t-lg">
                     <img src="${card.image}" alt="${card.title}" class="object-contain max-h-full w-auto group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
                 </div>
                 <div class="card-content p-6">
-                    <h2 class="text-xl font-semibold mb-2 text-slate-800">${card.title}</h2>
-                    <p class="text-slate-600 text-sm">${card.description}</p>
+                    <h2 class="text-xl font-semibold mb-2 text-ops-primary">${card.title}</h2>
+                    <p class="text-ops-gray-primary text-sm">${card.description}</p>
                 </div>
             </a>
         `;
-    }
-
-    // --- Render Functions ---
-    function renderCards(filter = 'All') {
-        let cardsHTML = '';
-        const filteredCards = cardsData.filter(card => filter === 'All' || card.category === filter);
-        
-        filteredCards.forEach(card => {
-            cardsHTML += createCardHTML(card);
-        });
-
-        if (filteredCards.length === 0 && cardsData.length > 0) {
-            cardsHTML = `<p class="text-slate-500 col-span-full text-center">No items match the filter "${filter}".</p>`;
         }
-        
-        cardsContainer.innerHTML = cardsHTML;
-    }
 
-    function setupFilters() {
-        const categories = ['All', ...new Set(cardsData.map(card => card.category).filter(c => c))];
-        let filterHTML = '';
-        categories.forEach(category => {
-            filterHTML += `<button class="filter-btn ${category === 'All' ? 'active' : ''}" data-filter="${category}">${category}</button>`;
-        });
-        filterContainer.innerHTML = filterHTML;
+        // --- Render Functions ---
+        function renderCards(filter = 'All') {
+            let cardsHTML = '';
+            const filteredCards = cardsData.filter(card => filter === 'All' || card.category === filter);
 
-        filterContainer.addEventListener('click', e => {
-            if (e.target.tagName !== 'BUTTON') return;
+            filteredCards.forEach(card => {
+                cardsHTML += createCardHTML(card);
+            });
 
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            
-            renderCards(e.target.dataset.filter);
-        });
-    }
-    
-    // --- View Switching Logic ---
-    function setView(view) {
-        if (view === 'list') {
-            cardsContainer.className = 'list-view';
-            listViewBtn.classList.add('active');
-            gridViewBtn.classList.remove('active');
-            localStorage.setItem('preferredView', 'list');
-        } else { // Default to grid
-            cardsContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8';
-            gridViewBtn.classList.add('active');
-            listViewBtn.classList.remove('active');
-            localStorage.setItem('preferredView', 'grid');
-        }
-    }
-    
-    // --- Initialization ---
-    document.addEventListener('DOMContentLoaded', function() {
-        // First, check if there's any data and if it's a valid array.
-        if (!cardsData || !Array.isArray(cardsData) || cardsData.length === 0) {
-            // If no data, show a message and hide the controls.
-            cardsContainer.innerHTML = '<p class="text-slate-500 col-span-full text-center">No cards to display. Add data to your "Landing Page" Google Sheet.</p>';
-            if(controlsBar) {
-                controlsBar.style.display = 'none';
+            if (filteredCards.length === 0 && cardsData.length > 0) {
+                cardsHTML = `<p class="text-ops-gray-light col-span-full text-center">No items match the filter "${filter}".</p>`;
             }
-             // For debugging, log to the console if the data is invalid.
-            if (cardsData && !Array.isArray(cardsData)) {
-                console.error("Data received from server is not an array:", cardsData);
-            }
-            return; // Stop the rest of the script from running.
+
+            cardsContainer.innerHTML = cardsHTML;
         }
-        
-        // --- If we have data, proceed with setup ---
-        
-        // 1. Set up filter buttons
-        setupFilters();
 
-        // 2. Set initial view from localStorage or default to grid
-        const preferredView = localStorage.getItem('preferredView') || 'grid';
-        setView(preferredView);
-        
-        // 3. Render cards for the first time
-        renderCards('All');
+        function setupFilters() {
+            const categories = ['All', ...new Set(cardsData.map(card => card.category).filter(c => c))];
+            let filterHTML = '';
+            categories.forEach(category => {
+                filterHTML += `<button class="filter-btn ${category === 'All' ? 'active' : ''}" data-filter="${category}">${category}</button>`;
+            });
+            filterContainer.innerHTML = filterHTML;
 
-        // 4. Add listeners for view toggle buttons
-        gridViewBtn.addEventListener('click', () => setView('grid'));
-        listViewBtn.addEventListener('click', () => setView('list'));
-        
-        // 5. Initialize Lucide icons
-        lucide.createIcons();
-    });
-</script>
+            filterContainer.addEventListener('click', e => {
+                if (e.target.tagName !== 'BUTTON') return;
+
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                renderCards(e.target.dataset.filter);
+            });
+        }
+
+        // --- View Switching Logic ---
+        function setView(view) {
+            if (view === 'list') {
+                cardsContainer.className = 'list-view';
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                localStorage.setItem('preferredView', 'list');
+            } else { // Default to grid
+                cardsContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8';
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                localStorage.setItem('preferredView', 'grid');
+            }
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', function () {
+            // First, check if there's any data and if it's a valid array.
+            if (!cardsData || !Array.isArray(cardsData) || cardsData.length === 0) {
+                // If no data, show a message and hide the controls.
+                cardsContainer.innerHTML = '<p class="text-ops-gray-light col-span-full text-center">No cards to display. Add data to your "Landing Page" Google Sheet.</p>';
+                if (controlsBar) {
+                    controlsBar.style.display = 'none';
+                }
+                // For debugging, log to the console if the data is invalid.
+                if (cardsData && !Array.isArray(cardsData)) {
+                    console.error("Data received from server is not an array:", cardsData);
+                }
+                return; // Stop the rest of the script from running.
+            }
+
+            // --- If we have data, proceed with setup ---
+
+            // 1. Set up filter buttons
+            setupFilters();
+
+            // 2. Set initial view from localStorage or default to grid
+            const preferredView = localStorage.getItem('preferredView') || 'grid';
+            setView(preferredView);
+
+            // 3. Render cards for the first time
+            renderCards('All');
+
+            // 4. Add listeners for view toggle buttons
+            gridViewBtn.addEventListener('click', () => setView('grid'));
+            listViewBtn.addEventListener('click', () => setView('list'));
+
+            // 5. Initialize Lucide icons
+            lucide.createIcons();
+        });
+    </script>
 
 </body>
-</html>
 
+</html>

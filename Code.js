@@ -189,3 +189,12 @@ function convertGoogleDriveUrl(url) {
   }
   return 'https://placehold.co/600x400/e74c3c/ffffff?text=Invalid+Drive+Link';
 }
+
+/**
+ * Includes the content of another HTML file.
+ * @param {string} filename The name of the file to include.
+ * @return {string} The content of the file.
+ */
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
