@@ -65,15 +65,15 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 
 #### Primary Logo
 - **Dimensions**: 3450 x 603
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/OPS Tech Logo_Primary.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/OPS%20Tech%20Logo_Primary.png
 
 #### Secondary Badge
 - **Dimensions**: 1280 x 720
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/OPS Tech Logo_Secondary_badge.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/OPS%20Tech%20Logo_Secondary_badge.png
 
 #### Torch Icon
 - **Dimensions**: 1024 x 1024
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/Torch Icon.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/Torch%20Icon.png
 
 #### Spartan Head SVG
 - **Format**: Vector (SVG)
@@ -86,47 +86,47 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 #### Primary Logo (Responsive Sizes)
 
 **1200px width** - Large displays
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Primary_1200.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Primary_1200.png
 - **File Size**: ~41KB
 
 **600px width** - Medium displays
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Primary_600.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Primary_600.png
 - **File Size**: ~17KB
 
 **300px width** - Mobile/Small displays
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Primary_300.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Primary_300.png
 - **File Size**: ~7.3KB
 
 #### Secondary Badge (Responsive Sizes)
 
 **640px width** - Large displays
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Secondary_badge_640.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Secondary_badge_640.png
 - **File Size**: ~109KB
 
 **320px width** - Small displays
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Secondary_badge_320.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Secondary_badge_320.png
 - **File Size**: ~36KB
 
 #### Torch Icon (Favicon Sizes)
 
 **512x512** - High-res favicon
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_512.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_512.png
 - **File Size**: ~85KB
 
 **256x256** - Standard favicon
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_256.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_256.png
 - **File Size**: ~29KB
 
 **128x128** - Medium icon
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_128.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_128.png
 - **File Size**: ~11KB
 
 **64x64** - Small icon
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_64.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_64.png
 - **File Size**: ~4.6KB
 
 **32x32** - Tiny icon
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_32.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_32.png
 - **File Size**: ~2.6KB
 
 ---
@@ -135,11 +135,11 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 
 #### Intro Image
 - **Dimensions**: 1600 x 900
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS TEch Intro vid.png
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS%20TEch%20Intro%20vid.png
 
 #### Loader Video
 - **Format**: MP4
-- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS Tech Loader.mp4
+- **URL**: https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS%20Tech%20Loader.mp4
 
 ---
 
@@ -149,7 +149,7 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 
 ```html
 <img
-  src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS Tech Logo_Primary_1200.png"
+  src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Primary_1200.png"
   alt="OPS Tech Logo"
   class="w-full max-w-md mx-auto"
 >
@@ -159,11 +159,11 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 
 ```html
 <link rel="icon" type="image/png" sizes="32x32"
-  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_32.png">
+  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_32.png">
 <link rel="icon" type="image/png" sizes="64x64"
-  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_64.png">
+  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_64.png">
 <link rel="icon" type="image/png" sizes="128x128"
-  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch Icon_128.png">
+  href="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_128.png">
 ```
 
 ### Looping Video Animation (MP4 as GIF replacement)
@@ -171,7 +171,7 @@ All media assets are hosted on GitHub and publicly accessible via raw.githubuser
 ```html
 <video autoplay loop muted playsinline class="w-32 h-32">
   <source
-    src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS Tech Loader.mp4"
+    src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/animations/OPS%20Tech%20Loader.mp4"
     type="video/mp4">
 </video>
 ```
