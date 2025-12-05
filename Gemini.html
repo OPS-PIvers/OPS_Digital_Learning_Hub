@@ -143,9 +143,13 @@
         function renderCards() {
             const cardsContainer = document.getElementById('cards-container');
             let cardsHTML = '';
-            cardsData.forEach(card => {
-                cardsHTML += createCardHTML(card);
-            });
+            if (cardsData.length === 0) {
+                cardsHTML = `<div class="text-gray-500 dark:text-gray-400 text-center py-8">No cards to show.</div>`;
+            } else {
+                cardsData.forEach(card => {
+                    cardsHTML += createCardHTML(card);
+                });
+            }
             cardsContainer.innerHTML = cardsHTML;
         }
 
