@@ -4,58 +4,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Tools | Digital Learning Hub</title>
+    <title>Gemini AI Toolkit | OPS Tech Digital Learning Hub</title>
     <?!= include('Stylesheet'); ?>
+
+    <style>
+        /* Hero gradient background */
+        .hero-gradient {
+            background: linear-gradient(135deg, #2d3f89 0%, #1d2a5d 50%, #ad2122 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        /* Card hover effect */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+        }
+
+        /* Gradient border effect */
+        .gradient-border {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, #2d3f89, #ad2122);
+        }
+
+        .gradient-border-inner {
+            background: white;
+            border-radius: 14px;
+            height: 100%;
+        }
+
+        /* Badge styling */
+        .ai-badge {
+            background: linear-gradient(135deg, #ad2122, #c13435);
+            animation: pulse-subtle 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+
+        /* Sparkle effect on hover */
+        .sparkle-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sparkle-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: sparkle 3s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+    </style>
 </head>
 
 <body class="bg-ops-gray-lightest text-ops-gray-body">
 
-    <div class="container mx-auto px-4 py-12 md:py-20">
+    <!-- Hero Section with Branding -->
+    <section class="hero-gradient relative py-16 md:py-24">
+        <div class="container mx-auto px-4 relative z-10">
+            <!-- Back to Home Link -->
+            <a href="?" class="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors mb-8 group">
+                <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                <span class="font-medium">Back to Hub</span>
+            </a>
 
-        <!-- Header Section -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-ops-primary mb-4">Mastering the Gemini Toolkit</h1>
-            <p class="text-lg text-ops-gray-primary max-w-3xl mx-auto">A clear and inviting gateway for users to explore various functionalities of the Gemini toolset. Dive into our modules below to enhance your skills.</p>
-        </header>
+            <!-- Logo -->
+            <div class="flex justify-center mb-8">
+                <img
+                    src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/OPS%20Tech%20Logo_Primary_600.png"
+                    alt="OPS Tech Logo"
+                    class="h-12 md:h-16 w-auto opacity-95"
+                >
+            </div>
 
-        <!-- Cards Grid -->
-        <main>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+            <!-- Header Content -->
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span class="text-sm font-medium tracking-wide">AI-Powered Learning</span>
+                </div>
 
-                <!-- This is a scriptlet loop. It will repeat for each card in the data. -->
-                <? for (var i = 0; i < cardsData.length; i++) { ?>
-                <div class="flex flex-col bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                    <!-- Card Image -->
-                    <div class="relative">
-                        <img src="<?= cardsData[i].image ?>" alt="<?= cardsData[i].title ?>"
-                            class="w-full h-48 object-cover"
-                            onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Gemini AI Toolkit
+                </h1>
+
+                <p class="text-xl md:text-2xl text-white/90 mb-8 font-light leading-relaxed">
+                    Unlock the power of Google's most advanced AI to accelerate your learning journey
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 text-white/80 text-sm">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-yellow-300"></i>
+                        <span>Fast & Intelligent</span>
                     </div>
-                    <!-- Card Content -->
-                    <div class="flex flex-col flex-grow p-6">
-                        <h2 class="text-xl font-bold text-ops-primary mb-3">
-                            <?= cardsData[i].title ?>
-                        </h2>
-                        <p class="text-ops-gray-primary text-base leading-relaxed mb-4 flex-grow">
-                            <?= cardsData[i].description ?>
-                        </p>
-                        <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center justify-center px-6 py-3 bg-ops-primary text-white font-semibold rounded-lg hover:bg-ops-dark transition-colors duration-200">
-                            Learn More
-                        </a>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-green-300"></i>
+                        <span>Secure & Private</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4 text-blue-300"></i>
+                        <span>Continuous Updates</span>
                     </div>
                 </div>
-                <? } ?>
-
-                <!-- This message will show if the sheet is empty. -->
-                <? if (cardsData.length === 0) { ?>
-                <p class="text-ops-gray-light col-span-full text-center text-lg">No Gemini tools available yet. Add data to your "Gemini" Google Sheet to get started.</p>
-                <? } ?>
-
             </div>
-        </main>
+        </div>
 
-    </div>
+        <!-- Decorative bottom wave -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z" fill="#f3f3f3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pb-20 -mt-8 relative z-20">
+
+        <!-- Stats/Info Bar -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-12 border border-ops-gray-lighter">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-ops-lighter rounded-xl flex items-center justify-center">
+                        <i data-lucide="book-open" class="w-6 h-6 text-ops-primary"></i>
+                    </div>
+                    <h3 class="font-semibold text-ops-gray-darkest">Interactive Tutorials</h3>
+                    <p class="text-sm text-ops-gray-primary">Hands-on learning experiences</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-ops-red-lighter rounded-xl flex items-center justify-center">
+                        <i data-lucide="brain" class="w-6 h-6 text-ops-red-primary"></i>
+                    </div>
+                    <h3 class="font-semibold text-ops-gray-darkest">Advanced AI Capabilities</h3>
+                    <p class="text-sm text-ops-gray-primary">Powered by Gemini models</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-ops-lighter rounded-xl flex items-center justify-center">
+                        <i data-lucide="rocket" class="w-6 h-6 text-ops-primary"></i>
+                    </div>
+                    <h3 class="font-semibold text-ops-gray-darkest">Real-World Applications</h3>
+                    <p class="text-sm text-ops-gray-primary">Practical tools and use cases</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-ops-primary mb-4">
+                Explore the Toolkit
+            </h2>
+            <p class="text-lg text-ops-gray-primary max-w-2xl mx-auto">
+                Select a resource below to begin mastering Gemini AI capabilities
+            </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <? for (var i = 0; i < cardsData.length; i++) { ?>
+            <!-- Enhanced Card -->
+            <article class="card-hover group">
+                <div class="gradient-border h-full">
+                    <div class="gradient-border-inner flex flex-col h-full">
+                        <!-- Card Image with Overlay -->
+                        <div class="relative overflow-hidden rounded-t-xl">
+                            <div class="absolute top-4 right-4 z-10">
+                                <span class="ai-badge text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                    AI-POWERED
+                                </span>
+                            </div>
+                            <img
+                                src="<?= cardsData[i].image ?>"
+                                alt="<?= cardsData[i].title ?>"
+                                class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
+                                onerror="this.onerror=null;this.src='https://placehold.co/600x400/2d3f89/ffffff?text=Gemini+AI';"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-ops-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="flex flex-col flex-grow p-6">
+                            <!-- Title with Icon -->
+                            <div class="flex items-start gap-3 mb-3">
+                                <div class="w-10 h-10 bg-ops-lighter rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i data-lucide="gem" class="w-5 h-5 text-ops-primary"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-ops-primary leading-tight group-hover:text-ops-light transition-colors">
+                                    <?= cardsData[i].title ?>
+                                </h3>
+                            </div>
+
+                            <!-- Description -->
+                            <p class="text-ops-gray-primary text-base leading-relaxed mb-6 flex-grow">
+                                <?= cardsData[i].description ?>
+                            </p>
+
+                            <!-- CTA Button -->
+                            <a
+                                href="<?= cardsData[i].url ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="sparkle-effect inline-flex items-center justify-center gap-2 px-6 py-3 bg-ops-primary text-white font-semibold rounded-xl hover:bg-ops-dark transition-all duration-200 shadow-md hover:shadow-xl group/btn"
+                            >
+                                <span>Explore Tool</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <? } ?>
+
+            <!-- Empty State -->
+            <? if (cardsData.length === 0) { ?>
+            <div class="col-span-full flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-24 h-24 bg-ops-lighter rounded-full flex items-center justify-center mb-6">
+                    <i data-lucide="inbox" class="w-12 h-12 text-ops-primary"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-ops-primary mb-3">No Tools Available Yet</h3>
+                <p class="text-ops-gray-primary max-w-md mb-6">
+                    The Gemini toolkit is being prepared. Add data to your "Gemini" Google Sheet to populate this page with learning resources.
+                </p>
+                <a href="?" class="inline-flex items-center gap-2 text-ops-primary hover:text-ops-light transition-colors font-semibold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Return to Hub</span>
+                </a>
+            </div>
+            <? } ?>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-ops-gray-lighter mt-20 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <img
+                    src="https://raw.githubusercontent.com/OPS-PIvers/OPS_Digital_Learning_Hub/main/assets/logos/resized/Torch%20Icon_64.png"
+                    alt="OPS Torch Icon"
+                    class="w-8 h-8"
+                >
+                <span class="text-ops-gray-primary font-medium">OPS Tech Digital Learning Hub</span>
+            </div>
+            <p class="text-sm text-ops-gray-light">
+                Empowering educators and learners with cutting-edge AI technology
+            </p>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
 
