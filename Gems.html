@@ -24,14 +24,13 @@
 
                 <!-- This is a scriptlet loop. It will repeat for each row in your Google Sheet. -->
                 <? for (var i = 0; i < cardsData.length; i++) { ?>
-                <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer"
-                    class="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out overflow-hidden">
+                <div class="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out overflow-hidden flex flex-col h-full">
                     <div class="relative">
                         <img src="<?= cardsData[i].image ?>" alt="<?= cardsData[i].title ?>"
                             class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/e74c3c/ffffff?text=Image+Error';">
                     </div>
-                    <div class="p-6">
+                    <div class="p-6 flex-grow">
                         <h2 class="text-xl font-semibold mb-2 text-ops-primary">
                             <?= cardsData[i].title ?>
                         </h2>
@@ -39,7 +38,24 @@
                             <?= cardsData[i].description ?>
                         </p>
                     </div>
-                </a>
+                    <div class="p-6 pt-0 mt-auto grid grid-cols-2 gap-4">
+                        <? if (cardsData[i].needsModal === true || cardsData[i].needsModal === "TRUE" || cardsData[i].needsModal === "true") { ?>
+                        <button onclick="openModal('<?= cardsData[i].url ?>')"
+                            class="text-center bg-ops-primary text-white py-2 px-4 rounded hover:bg-ops-light transition-colors duration-300 text-sm font-medium flex items-center justify-center cursor-pointer">
+                            Try it
+                        </button>
+                        <? } else { ?>
+                        <a href="<?= cardsData[i].url ?>" target="_blank" rel="noopener noreferrer"
+                            class="text-center bg-ops-primary text-white py-2 px-4 rounded hover:bg-ops-light transition-colors duration-300 text-sm font-medium flex items-center justify-center">
+                            Try it
+                        </a>
+                        <? } ?>
+                        <a href="<?= cardsData[i].url2 ?>" target="_blank" rel="noopener noreferrer"
+                            class="text-center bg-ops-red-primary text-white py-2 px-4 rounded hover:bg-ops-red-light transition-colors duration-300 text-sm font-medium flex items-center justify-center">
+                            Customize it
+                        </a>
+                    </div>
+                </div>
                 <? } ?>
 
                 <!-- This message will show if your sheet is empty. -->
@@ -52,6 +68,180 @@
         </main>
 
     </div>
+
+    <!-- Modal for Gem Customization -->
+    <div id="gemModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-ops-primary px-6 py-4 flex justify-between items-center">
+                <h3 class="text-white text-xl font-semibold">Customize Your Gem</h3>
+                <button onclick="closeModal()" class="text-white hover:text-ops-lighter focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 space-y-6">
+                
+                <!-- Content Area Input -->
+                <div>
+                    <label for="contentArea" class="block text-sm font-medium text-ops-gray-body mb-2">Content Area / Topic</label>
+                    <input type="text" id="contentArea" placeholder="e.g. Photosynthesis, Civil War, Fractions" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- Grade Level Input -->
+                <div>
+                    <label for="gradeLevel" class="block text-sm font-medium text-ops-gray-body mb-2">Grade Level</label>
+                    <input type="number" id="gradeLevel" placeholder="e.g. 5" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- Additional Info Input -->
+                <div>
+                    <label for="additionalInfo" class="block text-sm font-medium text-ops-gray-body mb-2">Additional Info / Description</label>
+                    <textarea id="additionalInfo" rows="3" placeholder="e.g. Focus on vocabulary, include a creative writing prompt, or paste a link to a resource." 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all resize-none"></textarea>
+                </div>
+
+                <!-- Resource Checkbox -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="hasResource" class="h-4 w-4 text-ops-primary focus:ring-ops-primary border-gray-300 rounded cursor-pointer">
+                    <label for="hasResource" class="ml-2 block text-sm text-ops-gray-body cursor-pointer select-none">
+                        Provide a specific resource? (This will be attached later)
+                    </label>
+                </div>
+
+                <!-- Level of Detail Slider -->
+                <div>
+                    <label for="detailSlider" class="block text-sm font-medium text-ops-gray-body mb-2">Level of Detail</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs text-ops-gray-primary font-medium px-1">
+                            <span>Visual / Simple</span>
+                            <span>Text / Complex</span>
+                        </div>
+                        <input type="range" id="detailSlider" min="1" max="5" step="1" value="3" 
+                            oninput="updateSliderLabel(this.value)"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-ops-primary">
+                        <p id="sliderLabel" class="text-sm text-center text-ops-primary font-medium mt-2">
+                            Moderate text complexity with visuals
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                <button onclick="closeModal()" 
+                    class="px-4 py-2 text-ops-gray-primary hover:text-ops-gray-darkest font-medium transition-colors">
+                    Cancel
+                </button>
+                <button onclick="launchGem()" 
+                    class="px-6 py-2 bg-ops-primary text-white rounded-md hover:bg-ops-light shadow-sm hover:shadow transition-all font-medium">
+                    Launch Gem
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTargetUrl = '';
+        
+        const detailLevels = {
+            1: "Visual-based with little to no text",
+            2: "Simple sentences with supporting visuals",
+            3: "Moderate text complexity with visuals",
+            4: "Detailed text with some visuals",
+            5: "Comprehensive, robust text analysis"
+        };
+
+        function openModal(url) {
+            currentTargetUrl = url;
+            // Reset fields
+            document.getElementById('contentArea').value = '';
+            document.getElementById('gradeLevel').value = '';
+            document.getElementById('additionalInfo').value = '';
+            document.getElementById('hasResource').checked = false;
+            
+            // Reset Slider
+            const defaultLevel = 3;
+            document.getElementById('detailSlider').value = defaultLevel;
+            updateSliderLabel(defaultLevel);
+            
+            document.getElementById('gemModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('gemModal').classList.add('hidden');
+        }
+
+        function updateSliderLabel(val) {
+            const label = detailLevels[val] || detailLevels[3];
+            document.getElementById('sliderLabel').innerText = label;
+        }
+
+        function launchGem() {
+            const content = document.getElementById('contentArea').value.trim();
+            const grade = document.getElementById('gradeLevel').value.trim();
+            const additional = document.getElementById('additionalInfo').value.trim();
+            const hasResource = document.getElementById('hasResource').checked;
+            
+            // Get Slider Value
+            const sliderVal = document.getElementById('detailSlider').value;
+            const detailDescription = detailLevels[sliderVal];
+
+            // Construct the prompt
+            let promptParts = [];
+            if (grade) promptParts.push(`Grade Level: ${grade}`);
+            if (content) promptParts.push(`Content Area: ${content}`);
+            if (additional) promptParts.push(`Additional Details: ${additional}`);
+            if (detailDescription) promptParts.push(`Level of Detail: ${detailDescription}`);
+            
+            // Base instruction for the Gem
+            let finalPrompt = "";
+            if (promptParts.length > 0) {
+                 finalPrompt = "Here is my context: " + promptParts.join(', ') + ". ";
+            }
+
+            // Add resource statement
+            if (hasResource) {
+                finalPrompt += "I do have a resource to attach. ";
+            } else {
+                finalPrompt += "I don't have a resource to attach. ";
+            }
+
+            finalPrompt += "Let's get started.";
+
+            if (currentTargetUrl) {
+                try {
+                    // Attempt to parse as a full URL
+                    const urlObj = new URL(currentTargetUrl);
+                    // Set/Overwrite the prompt_text parameter
+                    urlObj.searchParams.set('prompt_text', finalPrompt);
+                    window.open(urlObj.toString(), '_blank');
+                } catch (e) {
+                    console.log("Could not parse as absolute URL, trying basic append:", e);
+                    // Fallback for simple string manipulation if URL construction fails
+                    const separator = currentTargetUrl.includes('?') ? '&' : '?';
+                    const finalUrl = currentTargetUrl + separator + "prompt_text=" + encodeURIComponent(finalPrompt);
+                    window.open(finalUrl, '_blank');
+                }
+                closeModal();
+            } else {
+                alert("Error: No target URL found for this Gem.");
+            }
+        }
+        
+        // Close modal on click outside
+        document.getElementById('gemModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 
