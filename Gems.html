@@ -139,7 +139,7 @@
                     class="px-4 py-2 text-ops-gray-primary hover:text-ops-gray-darkest font-medium transition-colors">
                     Cancel
                 </button>
-                <button onclick="launchGem()"
+                <button onclick="launchGem(event)"
                     class="px-6 py-2 bg-ops-primary text-white rounded-md hover:bg-ops-light shadow-sm hover:shadow transition-all font-medium">
                     Copy Prompt & Go
                 </button>
@@ -183,7 +183,7 @@
             document.getElementById('sliderLabel').innerText = label;
         }
 
-        async function launchGem() {
+        async function launchGem(event) {
             const content = document.getElementById('contentArea').value.trim();
             const grade = document.getElementById('gradeLevel').value.trim();
             const additional = document.getElementById('additionalInfo').value.trim();
@@ -226,8 +226,13 @@
                         const urlObj = new URL(currentTargetUrl);
                         baseUrl = urlObj.origin + urlObj.pathname;
                     } catch (e) {
-                        // If URL parsing fails, use as-is (might be relative)
+                        // If URL parsing fails, use as-is but sanitize
                         baseUrl = currentTargetUrl.split('?')[0];
+                        if (baseUrl.trim().toLowerCase().startsWith('javascript:')) {
+                            console.error('Blocked javascript: URI for security reasons.');
+                            alert('This link type is not allowed.');
+                            return; // Abort on invalid protocol
+                        }
                     }
 
                     // Show success feedback
