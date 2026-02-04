@@ -216,27 +216,27 @@
             finalPrompt += "Let's get started.";
 
             if (currentTargetUrl) {
+                // Extract base URL without parameters
+                let baseUrl = currentTargetUrl;
+                try {
+                    const urlObj = new URL(currentTargetUrl);
+                    baseUrl = urlObj.origin + urlObj.pathname;
+                } catch (e) {
+                    // If URL parsing fails, use as-is but sanitize
+                    baseUrl = currentTargetUrl.split('?')[0];
+                    if (baseUrl.trim().toLowerCase().startsWith('javascript:')) {
+                        console.error('Blocked javascript: URI for security reasons.');
+                        alert('This link type is not allowed.');
+                        return; // Abort on invalid protocol
+                    }
+                }
+
                 try {
                     // Copy the prompt to clipboard
                     await navigator.clipboard.writeText(finalPrompt);
 
-                    // Extract base URL without parameters
-                    let baseUrl = currentTargetUrl;
-                    try {
-                        const urlObj = new URL(currentTargetUrl);
-                        baseUrl = urlObj.origin + urlObj.pathname;
-                    } catch (e) {
-                        // If URL parsing fails, use as-is but sanitize
-                        baseUrl = currentTargetUrl.split('?')[0];
-                        if (baseUrl.trim().toLowerCase().startsWith('javascript:')) {
-                            console.error('Blocked javascript: URI for security reasons.');
-                            alert('This link type is not allowed.');
-                            return; // Abort on invalid protocol
-                        }
-                    }
-
                     // Show success feedback
-                    const originalButton = event.target;
+                    const originalButton = event.currentTarget;
                     const originalText = originalButton.textContent;
                     originalButton.textContent = 'Copied! Opening...';
                     originalButton.disabled = true;
@@ -253,7 +253,9 @@
 
                 } catch (err) {
                     console.error('Failed to copy prompt:', err);
-                    alert('Failed to copy prompt to clipboard. Please try again or check your browser permissions.');
+                    alert('Failed to copy prompt to clipboard. The prompt was not copied, but opening the Gem anyway.');
+                    // Still open the URL even if clipboard fails
+                    window.open(baseUrl, '_blank');
                 }
             } else {
                 alert("Error: No target URL found for this Gem.");
