@@ -139,9 +139,9 @@
                     class="px-4 py-2 text-ops-gray-primary hover:text-ops-gray-darkest font-medium transition-colors">
                     Cancel
                 </button>
-                <button onclick="launchGem()" 
+                <button onclick="launchGem(event)"
                     class="px-6 py-2 bg-ops-primary text-white rounded-md hover:bg-ops-light shadow-sm hover:shadow transition-all font-medium">
-                    Launch Gem
+                    Copy Prompt & Go
                 </button>
             </div>
         </div>
@@ -183,12 +183,12 @@
             document.getElementById('sliderLabel').innerText = label;
         }
 
-        function launchGem() {
+        async function launchGem(event) {
             const content = document.getElementById('contentArea').value.trim();
             const grade = document.getElementById('gradeLevel').value.trim();
             const additional = document.getElementById('additionalInfo').value.trim();
             const hasResource = document.getElementById('hasResource').checked;
-            
+
             // Get Slider Value
             const sliderVal = document.getElementById('detailSlider').value;
             const detailDescription = detailLevels[sliderVal];
@@ -199,7 +199,7 @@
             if (content) promptParts.push(`Content Area: ${content}`);
             if (additional) promptParts.push(`Additional Details: ${additional}`);
             if (detailDescription) promptParts.push(`Level of Detail: ${detailDescription}`);
-            
+
             // Base instruction for the Gem
             let finalPrompt = "";
             if (promptParts.length > 0) {
@@ -216,20 +216,47 @@
             finalPrompt += "Let's get started.";
 
             if (currentTargetUrl) {
+                // Extract base URL without parameters
+                let baseUrl = currentTargetUrl;
                 try {
-                    // Attempt to parse as a full URL
                     const urlObj = new URL(currentTargetUrl);
-                    // Set/Overwrite the prompt_text parameter
-                    urlObj.searchParams.set('prompt_text', finalPrompt);
-                    window.open(urlObj.toString(), '_blank');
+                    baseUrl = urlObj.origin + urlObj.pathname;
                 } catch (e) {
-                    console.log("Could not parse as absolute URL, trying basic append:", e);
-                    // Fallback for simple string manipulation if URL construction fails
-                    const separator = currentTargetUrl.includes('?') ? '&' : '?';
-                    const finalUrl = currentTargetUrl + separator + "prompt_text=" + encodeURIComponent(finalPrompt);
-                    window.open(finalUrl, '_blank');
+                    // If URL parsing fails, use as-is but sanitize
+                    baseUrl = currentTargetUrl.split('?')[0];
+                    if (baseUrl.trim().toLowerCase().startsWith('javascript:')) {
+                        console.error('Blocked javascript: URI for security reasons.');
+                        alert('This link type is not allowed.');
+                        return; // Abort on invalid protocol
+                    }
                 }
-                closeModal();
+
+                try {
+                    // Copy the prompt to clipboard
+                    await navigator.clipboard.writeText(finalPrompt);
+
+                    // Show success feedback
+                    const originalButton = event.currentTarget;
+                    const originalText = originalButton.textContent;
+                    originalButton.textContent = 'Copied! Opening...';
+                    originalButton.disabled = true;
+
+                    // Open the base URL
+                    window.open(baseUrl, '_blank');
+
+                    // Reset button and close modal after a short delay
+                    setTimeout(() => {
+                        originalButton.textContent = originalText;
+                        originalButton.disabled = false;
+                        closeModal();
+                    }, 1000);
+
+                } catch (err) {
+                    console.error('Failed to copy prompt:', err);
+                    alert('Failed to copy prompt to clipboard. The prompt was not copied, but opening the Gem anyway.');
+                    // Still open the URL even if clipboard fails
+                    window.open(baseUrl, '_blank');
+                }
             } else {
                 alert("Error: No target URL found for this Gem.");
             }
