@@ -231,13 +231,36 @@
                     }
                 }
 
-                try {
-                    // Copy the prompt to clipboard
-                    await navigator.clipboard.writeText(finalPrompt);
+                const originalButton = event.currentTarget;
+                const originalText = originalButton.textContent;
+                let copySuccess = false;
 
+                // Try modern Clipboard API first
+                try {
+                    await navigator.clipboard.writeText(finalPrompt);
+                    copySuccess = true;
+                } catch (err) {
+                    console.warn('Modern clipboard API failed, trying fallback method:', err);
+
+                    // Fallback: Use legacy execCommand method
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = finalPrompt;
+                        textarea.style.position = 'fixed';
+                        textarea.style.left = '-9999px';
+                        textarea.style.top = '-9999px';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        textarea.setSelectionRange(0, finalPrompt.length);
+                        copySuccess = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                    } catch (fallbackErr) {
+                        console.error('Fallback clipboard method also failed:', fallbackErr);
+                    }
+                }
+
+                if (copySuccess) {
                     // Show success feedback
-                    const originalButton = event.currentTarget;
-                    const originalText = originalButton.textContent;
                     originalButton.textContent = 'Copied! Opening...';
                     originalButton.disabled = true;
 
@@ -250,12 +273,22 @@
                         originalButton.disabled = false;
                         closeModal();
                     }, 1000);
+                } else {
+                    // Show the prompt for manual copying
+                    const userChoice = confirm(
+                        'Unable to automatically copy to clipboard.\n\n' +
+                        'Click OK to see the prompt so you can copy it manually, ' +
+                        'or Cancel to open the Gem without the prompt.'
+                    );
 
-                } catch (err) {
-                    console.error('Failed to copy prompt:', err);
-                    alert('Failed to copy prompt to clipboard. The prompt was not copied, but opening the Gem anyway.');
-                    // Still open the URL even if clipboard fails
+                    if (userChoice) {
+                        // Show prompt in a copyable format
+                        alert('Copy this prompt:\n\n' + finalPrompt);
+                    }
+
+                    // Open the URL regardless
                     window.open(baseUrl, '_blank');
+                    closeModal();
                 }
             } else {
                 alert("Error: No target URL found for this Gem.");
