@@ -36,7 +36,8 @@ function showGenericPage(pageParameter) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
   if (!sheet) {
-    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`);
+    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 
   // Assumes a standard 4-column layout for all generic card pages.
@@ -66,12 +67,14 @@ function showGenericPage(pageParameter) {
   try {
     const template = HtmlService.createTemplateFromFile(htmlFileName);
     template.cardsData = cardsData; // Generic name for data passed to template
+    template.webAppUrl = ScriptApp.getService().getUrl();
 
     return template.evaluate()
       .setTitle(sheetName)
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   } catch (error) {
-    return HtmlService.createHtmlOutput(`Error: HTML template named "${htmlFileName}.html" not found.`);
+    return HtmlService.createHtmlOutput(`Error: HTML template named "${htmlFileName}.html" not found.`)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 }
 
@@ -84,7 +87,8 @@ function showLandingPage() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
   if (!sheet) {
-    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`);
+    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 
   const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 7);
@@ -110,6 +114,7 @@ function showLandingPage() {
 
   const template = HtmlService.createTemplateFromFile('LandingPage');
   template.cards = cardsData;
+  template.webAppUrl = webAppUrl;
 
   return template.evaluate()
     .setTitle('Welcome')
@@ -121,7 +126,8 @@ function showInteractiveLearningAppsPage() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
 
   if (!sheet) {
-    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`);
+    return HtmlService.createHtmlOutput(`Error: Sheet named "${sheetName}" not found.`)
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
 
   const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 6);
@@ -175,6 +181,7 @@ function showInteractiveLearningAppsPage() {
 
   const template = HtmlService.createTemplateFromFile('InteractiveLearningApps');
   template.cards = cardsData;
+  template.webAppUrl = ScriptApp.getService().getUrl();
 
   return template.evaluate()
     .setTitle('Interactive Learning Apps')
@@ -187,16 +194,25 @@ function showInteractiveLearningAppsPage() {
  * (This function remains unchanged)
  */
 function convertGoogleDriveUrl(url) {
-  if (!url || !url.includes('drive.google.com')) {
-    return url || 'https://placehold.co/600x400/cccccc/ffffff?text=No+Image';
+  try {
+    if (!url || typeof url !== 'string' || !url.includes('drive.google.com')) {
+      return url || 'https://placehold.co/600x400/cccccc/ffffff?text=No+Image';
+    }
+    
+    // Support file/d/, open?id=, and uc?id= formats
+    const regex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=))([a-zA-Z0-9_-]{25,})/;
+    const match = url.match(regex);
+    
+    if (match && match[1]) {
+      const fileId = match[1];
+      // Using the thumbnail endpoint is generally more reliable for embedded views
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=w600`;
+    }
+    
+    return url; // Return original if it doesn't match Drive pattern but contains drive.google.com
+  } catch (e) {
+    return 'https://placehold.co/600x400/cccccc/ffffff?text=Error+Loading+Image';
   }
-  const regex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=))([a-zA-Z0-9_-]{25,})/;
-  const match = url.match(regex);
-  if (match && match[1]) {
-    const fileId = match[1];
-    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w600`;
-  }
-  return 'https://placehold.co/600x400/e74c3c/ffffff?text=Invalid+Drive+Link';
 }
 
 /**

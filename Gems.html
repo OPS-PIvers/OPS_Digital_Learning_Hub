@@ -32,6 +32,28 @@
 
         <!-- Cards Grid -->
         <main>
+            <!-- Safari/ITP Troubleshooting Message (Visible by default, hidden by JS) -->
+            <div id="safari-warning" class="bg-white p-8 rounded-lg shadow-md text-center max-w-2xl mx-auto my-12">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="p-3 bg-ops-lighter rounded-full">
+                        <i data-lucide="info" class="h-8 w-8 text-ops-primary"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-ops-primary">Loading Gems...</h2>
+                    <p class="text-ops-gray-primary">If this page remains blank for more than a few seconds, you may be using a browser (like Safari on iPhone) that blocks embedded content.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <a href="<?= webAppUrl ?>?page=gems" target="_blank" 
+                           class="px-6 py-3 bg-ops-primary text-white rounded-md font-medium hover:bg-ops-light transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="external-link" class="h-4 w-4"></i>
+                            Open in New Tab
+                        </a>
+                        <button onclick="location.reload()" class="px-6 py-3 border border-ops-gray-lighter text-ops-gray-primary rounded-md font-medium hover:bg-ops-gray-lightest transition-all">
+                            Refresh Page
+                        </button>
+                    </div>
+                    <p class="text-xs text-ops-gray-light mt-4">Tip: To prevent this in the future, go to <b>Settings > Safari</b> and turn off <b>"Prevent Cross-Site Tracking"</b>.</p>
+                </div>
+            </div>
+
             <div id="gemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
                 <!-- This is a scriptlet loop. It will repeat for each row in your Google Sheet. -->
@@ -452,12 +474,8 @@
             const input = document.getElementById('gemSearch');
             const filter = input.value.toLowerCase();
             const grid = document.getElementById('gemsGrid');
-            const cards = grid.getElementsByClassName('group'); // Each card has the 'group' class
+            const cards = grid.getElementsByClassName('group'); 
 
-            // We iterate through the DOM elements but use the parallel gemsData array for cleaner data access
-            // NOTE: This assumes the DOM order matches gemsData order, which it should initially.
-            // If DOM order changes, we'd need to store index on the DOM element.
-            
             for (let i = 0; i < cards.length; i++) {
                 const cardEl = cards[i];
                 const data = gemsData[i];
@@ -475,6 +493,16 @@
                 }
             }
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const safariWarning = document.getElementById('safari-warning');
+            if (safariWarning) safariWarning.style.display = 'none';
+            
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
     </script>
 
 </body>
