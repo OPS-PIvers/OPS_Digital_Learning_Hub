@@ -45,7 +45,7 @@ function showGenericPage(pageParameter) {
   let cardsData = [];
 
   if (lastRow > 1) {
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 7);
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, 8);
     const values = dataRange.getValues();
 
     cardsData = values.map(function(row) {
@@ -56,7 +56,8 @@ function showGenericPage(pageParameter) {
         url: row[3],
         url2: row[4],
         needsModal: row[5],
-        options: row[6] || ""
+        options: row[6] || "",
+        keywords: row[7] || ""
       };
     }).filter(row => row.title && row.url);
   }
