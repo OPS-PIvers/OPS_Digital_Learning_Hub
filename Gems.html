@@ -40,7 +40,7 @@
                     </div>
                     <div class="p-6 pt-0 mt-auto grid grid-cols-2 gap-4">
                         <? if (cardsData[i].needsModal === true || cardsData[i].needsModal === "TRUE" || cardsData[i].needsModal === "true") { ?>
-                        <button onclick="openModal('<?= cardsData[i].url ?>')"
+                        <button onclick="openModal('<?= cardsData[i].url ?>', '<?= cardsData[i].title.replace(/'/g, "\\'") ?>', '<?= cardsData[i].options.replace(/'/g, "\\'") ?>')"
                             class="text-center bg-ops-primary text-white py-2 px-3 rounded hover:bg-ops-light transition-colors duration-300 text-xs font-medium flex items-center justify-center cursor-pointer">
                             Try it
                         </button>
@@ -83,39 +83,39 @@
             </div>
             
             <!-- Modal Body -->
-            <div class="p-6 space-y-6">
+            <!-- Modal Body -->
+            <div id="modalBody" class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
                 
-                <!-- Content Area Input -->
-                <div>
-                    <label for="contentArea" class="block text-sm font-medium text-ops-gray-body mb-2">Content Area / Topic</label>
-                    <input type="text" id="contentArea" placeholder="e.g. Photosynthesis, Civil War, Fractions" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
-                </div>
-
-                <!-- Grade Level Input -->
-                <div>
+                <!-- 1. Grade Level -->
+                <div id="field-grade-level" class="field-container hidden">
                     <label for="gradeLevel" class="block text-sm font-medium text-ops-gray-body mb-2">Grade Level</label>
-                    <input type="number" id="gradeLevel" placeholder="e.g. 5" 
+                    <input type="number" id="gradeLevel" placeholder="e.g. 5"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
                 </div>
 
-                <!-- Additional Info Input -->
-                <div>
+                <!-- 2. Subject -->
+                <div id="field-subject" class="field-container hidden">
+                    <label for="subject" class="block text-sm font-medium text-ops-gray-body mb-2">Subject / Content Area</label>
+                    <input type="text" id="subject" placeholder="e.g. Math, Science, ELA"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 3. Topic -->
+                <div id="field-topic" class="field-container hidden">
+                    <label for="topic" class="block text-sm font-medium text-ops-gray-body mb-2">Topic / Learning Objective</label>
+                    <input type="text" id="topic" placeholder="e.g. Photosynthesis, Civil War"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 4. Additional Details -->
+                <div id="field-additional-details" class="field-container hidden">
                     <label for="additionalInfo" class="block text-sm font-medium text-ops-gray-body mb-2">Additional Info / Description</label>
-                    <textarea id="additionalInfo" rows="3" placeholder="e.g. Focus on vocabulary, include a creative writing prompt, or paste a link to a resource." 
+                    <textarea id="additionalInfo" rows="3" placeholder="e.g. Focus on vocabulary, include a creative writing prompt..."
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all resize-none"></textarea>
                 </div>
 
-                <!-- Resource Checkbox -->
-                <div class="flex items-center">
-                    <input type="checkbox" id="hasResource" class="h-4 w-4 text-ops-primary focus:ring-ops-primary border-gray-300 rounded cursor-pointer">
-                    <label for="hasResource" class="ml-2 block text-sm text-ops-gray-body cursor-pointer select-none">
-                        Provide a specific resource? (This will be attached later)
-                    </label>
-                </div>
-
-                <!-- Level of Detail Slider -->
-                <div>
+                <!-- 5. Level of Detail -->
+                <div id="field-level-of-detail" class="field-container hidden">
                     <label for="detailSlider" class="block text-sm font-medium text-ops-gray-body mb-2">Level of Detail</label>
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-xs text-ops-gray-primary font-medium px-1">
@@ -131,9 +131,79 @@
                     </div>
                 </div>
 
-            </div>
+                <!-- 6. Student Interests -->
+                <div id="field-student-interests" class="field-container hidden">
+                    <label for="interests" class="block text-sm font-medium text-ops-gray-body mb-2">Student Interests</label>
+                    <input type="text" id="interests" placeholder="e.g. Video games, animals, space explorer"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
 
-            <!-- Modal Footer -->
+                <!-- 7. Prior Knowledge -->
+                <div id="field-prior-knowledge" class="field-container hidden">
+                    <label for="priorKnowledge" class="block text-sm font-medium text-ops-gray-body mb-2">Prior Knowledge</label>
+                    <input type="text" id="priorKnowledge" placeholder="What do they already know?"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 8. Assessment Type -->
+                <div id="field-assessment-type" class="field-container hidden">
+                    <label for="assessmentType" class="block text-sm font-medium text-ops-gray-body mb-2">Assessment Type</label>
+                    <input type="text" id="assessmentType" placeholder="e.g. Multiple choice, rubric, exit ticket"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 9. Standards -->
+                <div id="field-standards" class="field-container hidden">
+                    <label for="standards" class="block text-sm font-medium text-ops-gray-body mb-2">Standards Alignment</label>
+                    <input type="text" id="standards" placeholder="e.g. Common Core, State Standards"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 10. ELL Support -->
+                <div id="field-ell-support" class="field-container hidden">
+                    <label for="ellSupport" class="block text-sm font-medium text-ops-gray-body mb-2">ELL / Language Support</label>
+                    <input type="text" id="ellSupport" placeholder="e.g. Visual aids, simplified vocabulary"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 11. Accommodations -->
+                <div id="field-accommodations" class="field-container hidden">
+                    <label for="accommodations" class="block text-sm font-medium text-ops-gray-body mb-2">Accommodations / Modifications</label>
+                    <input type="text" id="accommodations" placeholder="e.g. Extended time, text-to-speech"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 12. Tone / Style -->
+                <div id="field-tone-style" class="field-container hidden">
+                    <label for="toneStyle" class="block text-sm font-medium text-ops-gray-body mb-2">Tone / Style</label>
+                    <input type="text" id="toneStyle" placeholder="e.g. Humorous, Professional, Encouraging"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 13. Target Audience -->
+                <div id="field-target-audience" class="field-container hidden">
+                    <label for="targetAudience" class="block text-sm font-medium text-ops-gray-body mb-2">Target Audience</label>
+                    <input type="text" id="targetAudience" placeholder="e.g. Students, Parents, Teachers"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 14. Output Format -->
+                <div id="field-output-format" class="field-container hidden">
+                    <label for="outputFormat" class="block text-sm font-medium text-ops-gray-body mb-2">Output Format</label>
+                    <input type="text" id="outputFormat" placeholder="e.g. Table, List, Paragraph, Slides outline"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                </div>
+
+                <!-- 15. Resource Checkbox -->
+                <div id="field-resource" class="field-container flex items-center hidden">
+                    <input type="checkbox" id="hasResource" class="h-4 w-4 text-ops-primary focus:ring-ops-primary border-gray-300 rounded cursor-pointer">
+                    <label for="hasResource" class="ml-2 block text-sm text-ops-gray-body cursor-pointer select-none">
+                        Provide a specific resource? (This will be attached later)
+                    </label>
+                </div>
+
+            </div>
+<!-- Modal Footer -->
             <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
                 <button onclick="closeModal()" 
                     class="px-4 py-2 text-ops-gray-primary hover:text-ops-gray-darkest font-medium transition-colors">
@@ -147,8 +217,13 @@
         </div>
     </div>
 
+
+
+
     <script>
         let currentTargetUrl = '';
+        let currentGemTitle = '';
+        let activeFieldIds = [];
         
         const detailLevels = {
             1: "Visual-based with little to no text",
@@ -158,19 +233,61 @@
             5: "Comprehensive, robust text analysis"
         };
 
-        function openModal(url) {
+        const fieldMapping = {
+            'Grade Level': { containerId: 'field-grade-level', inputId: 'gradeLevel', label: 'Grade Level' },
+            'Subject': { containerId: 'field-subject', inputId: 'subject', label: 'Subject / Content Area' },
+            'Topic': { containerId: 'field-topic', inputId: 'topic', label: 'Topic / Learning Objective' },
+            'Additional Details': { containerId: 'field-additional-details', inputId: 'additionalInfo', label: 'Additional Details' },
+            'Level of Detail': { containerId: 'field-level-of-detail', inputId: 'detailSlider', label: 'Level of Detail' },
+            'Student Interests': { containerId: 'field-student-interests', inputId: 'interests', label: 'Student Interests' },
+            'Prior Knowledge': { containerId: 'field-prior-knowledge', inputId: 'priorKnowledge', label: 'Prior Knowledge' },
+            'Assessment Type': { containerId: 'field-assessment-type', inputId: 'assessmentType', label: 'Assessment Type' },
+            'Standards': { containerId: 'field-standards', inputId: 'standards', label: 'Standards' },
+            'ELL Support': { containerId: 'field-ell-support', inputId: 'ellSupport', label: 'ELL Support' },
+            'Accommodations': { containerId: 'field-accommodations', inputId: 'accommodations', label: 'Accommodations' },
+            'Tone/Style': { containerId: 'field-tone-style', inputId: 'toneStyle', label: 'Tone / Style' },
+            'Target Audience': { containerId: 'field-target-audience', inputId: 'targetAudience', label: 'Target Audience' },
+            'Output Format': { containerId: 'field-output-format', inputId: 'outputFormat', label: 'Output Format' },
+            'Resource': { containerId: 'field-resource', inputId: 'hasResource', label: 'Resource Attachment' }
+        };
+
+        const defaultOptions = ['Grade Level', 'Subject', 'Topic', 'Additional Details', 'Level of Detail', 'Resource'];
+
+        function openModal(url, title, options) {
             currentTargetUrl = url;
-            // Reset fields
-            document.getElementById('contentArea').value = '';
-            document.getElementById('gradeLevel').value = '';
-            document.getElementById('additionalInfo').value = '';
-            document.getElementById('hasResource').checked = false;
+            currentGemTitle = title;
             
-            // Reset Slider
-            const defaultLevel = 3;
-            document.getElementById('detailSlider').value = defaultLevel;
-            updateSliderLabel(defaultLevel);
-            
+            // Reset all fields and hide containers
+            Object.values(fieldMapping).forEach(mapping => {
+                const container = document.getElementById(mapping.containerId);
+                const input = document.getElementById(mapping.inputId);
+                if (container) container.classList.add('hidden');
+                if (input) {
+                    if (input.type === 'checkbox') input.checked = false;
+                    else if (input.type === 'range') input.value = 3;
+                    else input.value = '';
+                }
+            });
+            updateSliderLabel(3);
+
+            // Determine which options to show
+            let optionsToShow = options ? options.split(',').map(o => o.trim()) : defaultOptions;
+            activeFieldIds = [];
+
+            optionsToShow.forEach(optionName => {
+                const mapping = fieldMapping[optionName];
+                if (mapping) {
+                    const container = document.getElementById(mapping.containerId);
+                    if (container) {
+                        container.classList.remove('hidden');
+                        if (mapping.containerId === 'field-resource') {
+                            container.classList.add('flex');
+                        }
+                        activeFieldIds.push(optionName);
+                    }
+                }
+            });
+
             document.getElementById('gemModal').classList.remove('hidden');
         }
 
@@ -180,69 +297,61 @@
 
         function updateSliderLabel(val) {
             const label = detailLevels[val] || detailLevels[3];
-            document.getElementById('sliderLabel').innerText = label;
+            const labelElement = document.getElementById('sliderLabel');
+            if (labelElement) labelElement.innerText = label;
         }
 
         async function launchGem(event) {
-            const content = document.getElementById('contentArea').value.trim();
-            const grade = document.getElementById('gradeLevel').value.trim();
-            const additional = document.getElementById('additionalInfo').value.trim();
-            const hasResource = document.getElementById('hasResource').checked;
-
-            // Get Slider Value
-            const sliderVal = document.getElementById('detailSlider').value;
-            const detailDescription = detailLevels[sliderVal];
-
-            // Construct the prompt
             let promptParts = [];
-            if (grade) promptParts.push(`Grade Level: ${grade}`);
-            if (content) promptParts.push(`Content Area: ${content}`);
-            if (additional) promptParts.push(`Additional Details: ${additional}`);
-            if (detailDescription) promptParts.push(`Level of Detail: ${detailDescription}`);
+            const nl = String.fromCharCode(10);
 
-            // Base instruction for the Gem
-            let finalPrompt = "";
+            activeFieldIds.forEach(optionName => {
+                const mapping = fieldMapping[optionName];
+                const input = document.getElementById(mapping.inputId);
+                if (input) {
+                    let val = '';
+                    if (input.type === 'checkbox') {
+                        val = input.checked ? 'I will provide a resource to attach.' : 'No additional resource will be provided.';
+                    } else if (input.type === 'range') {
+                        val = detailLevels[input.value];
+                    } else {
+                        val = input.value.trim();
+                    }
+
+                    if (val) {
+                        promptParts.push(`- **${mapping.label}:** ${val}`);
+                    }
+                }
+            });
+
+            // Construct robust prompt
+            let finalPrompt = `I am using the "${currentGemTitle}" Gem to assist me. Here is the context for my request:` + nl + nl + `### Context` + nl;
+
             if (promptParts.length > 0) {
-                 finalPrompt = "Here is my context: " + promptParts.join(', ') + ". ";
-            }
-
-            // Add resource statement
-            if (hasResource) {
-                finalPrompt += "I do have a resource to attach. ";
+                finalPrompt += promptParts.join(nl);
             } else {
-                finalPrompt += "I don't have a resource to attach. ";
+                finalPrompt += "No specific context provided.";
             }
 
-            finalPrompt += "Let's get started.";
+            finalPrompt += nl + nl + `### Instructions` + nl + `Please use the context provided above to generate a high-quality, relevant response. Let's get started!`;
 
             if (currentTargetUrl) {
-                // Extract base URL without parameters
                 let baseUrl = currentTargetUrl;
                 try {
                     const urlObj = new URL(currentTargetUrl);
                     baseUrl = urlObj.origin + urlObj.pathname;
                 } catch (e) {
-                    // If URL parsing fails, use as-is but sanitize
                     baseUrl = currentTargetUrl.split('?')[0];
-                    if (baseUrl.trim().toLowerCase().startsWith('javascript:')) {
-                        console.error('Blocked javascript: URI for security reasons.');
-                        alert('This link type is not allowed.');
-                        return; // Abort on invalid protocol
-                    }
                 }
 
                 const originalButton = event.currentTarget;
                 const originalText = originalButton.textContent;
                 let copySuccess = false;
 
-                // Try modern Clipboard API first
                 try {
                     await navigator.clipboard.writeText(finalPrompt);
                     copySuccess = true;
                 } catch (err) {
-                    console.warn('Modern clipboard API failed, trying fallback method:', err);
-
-                    // Fallback: Use legacy execCommand method
                     try {
                         const textarea = document.createElement('textarea');
                         textarea.value = finalPrompt;
@@ -255,53 +364,35 @@
                         copySuccess = document.execCommand('copy');
                         document.body.removeChild(textarea);
                     } catch (fallbackErr) {
-                        console.error('Fallback clipboard method also failed:', fallbackErr);
+                        console.error('Clipboard failed:', fallbackErr);
                     }
                 }
 
                 if (copySuccess) {
-                    // Show success feedback
                     originalButton.textContent = 'Copied! Opening...';
                     originalButton.disabled = true;
-
-                    // Open the base URL
                     window.open(baseUrl, '_blank');
-
-                    // Reset button and close modal after a short delay
                     setTimeout(() => {
                         originalButton.textContent = originalText;
                         originalButton.disabled = false;
                         closeModal();
                     }, 1000);
                 } else {
-                    // Show the prompt for manual copying
-                    const userChoice = confirm(
-                        'Unable to automatically copy to clipboard.\n\n' +
-                        'Click OK to see the prompt so you can copy it manually, ' +
-                        'or Cancel to open the Gem without the prompt.'
-                    );
-
-                    if (userChoice) {
-                        // Show prompt in a copyable format
-                        alert('Copy this prompt:\n\n' + finalPrompt);
-                    }
-
-                    // Open the URL regardless
+                    const userChoice = confirm('Unable to auto-copy. Click OK to see prompt or Cancel to open Gem without it.');
+                    if (userChoice) alert('Copy this prompt:' + nl + nl + finalPrompt);
                     window.open(baseUrl, '_blank');
                     closeModal();
                 }
-            } else {
-                alert("Error: No target URL found for this Gem.");
             }
         }
         
-        // Close modal on click outside
         document.getElementById('gemModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+            if (e.target === this) closeModal();
         });
     </script>
+
+
+
 
 </body>
 
