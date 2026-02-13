@@ -40,7 +40,7 @@
                     </div>
                     <div class="p-6 pt-0 mt-auto grid grid-cols-2 gap-4">
                         <? if (cardsData[i].needsModal === true || cardsData[i].needsModal === "TRUE" || cardsData[i].needsModal === "true") { ?>
-                        <button onclick="openModal('<?= cardsData[i].url ?>', '<?= cardsData[i].title.replace(/'/g, "\\'") ?>', '<?= cardsData[i].options.replace(/'/g, "\\'") ?>')"
+                        <button onclick="openModal(<?= i ?>)"
                             class="text-center bg-ops-primary text-white py-2 px-3 rounded hover:bg-ops-light transition-colors duration-300 text-xs font-medium flex items-center justify-center cursor-pointer">
                             Try it
                         </button>
@@ -82,7 +82,6 @@
                 </button>
             </div>
             
-            <!-- Modal Body -->
             <!-- Modal Body -->
             <div id="modalBody" class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
                 
@@ -203,7 +202,7 @@
                 </div>
 
             </div>
-<!-- Modal Footer -->
+            <!-- Modal Footer -->
             <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
                 <button onclick="closeModal()" 
                     class="px-4 py-2 text-ops-gray-primary hover:text-ops-gray-darkest font-medium transition-colors">
@@ -217,10 +216,10 @@
         </div>
     </div>
 
-
-
-
     <script>
+        // Inject server-side data safely
+        const gemsData = <?!= JSON.stringify(cardsData) ?>;
+
         let currentTargetUrl = '';
         let currentGemTitle = '';
         let activeFieldIds = [];
@@ -253,9 +252,13 @@
 
         const defaultOptions = ['Grade Level', 'Subject', 'Topic', 'Additional Details', 'Level of Detail', 'Resource'];
 
-        function openModal(url, title, options) {
-            currentTargetUrl = url;
-            currentGemTitle = title;
+        function openModal(index) {
+            const card = gemsData[index];
+            if (!card) return;
+
+            currentTargetUrl = card.url;
+            currentGemTitle = card.title;
+            const options = card.options;
             
             // Reset all fields and hide containers
             Object.values(fieldMapping).forEach(mapping => {
@@ -390,9 +393,6 @@
             if (e.target === this) closeModal();
         });
     </script>
-
-
-
 
 </body>
 
