@@ -88,8 +88,31 @@
                 <!-- 1. Grade Level -->
                 <div id="field-grade-level" class="field-container hidden">
                     <label for="gradeLevel" class="block text-sm font-medium text-ops-gray-body mb-2">Grade Level</label>
-                    <input type="number" id="gradeLevel" placeholder="e.g. 5"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                    <div class="relative">
+                        <select id="gradeLevel" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all appearance-none bg-white">
+                            <option value="">Select a Grade</option>
+                            <option value="Pre-K">Pre-K</option>
+                            <option value="K">Kindergarten</option>
+                            <option value="1">1st Grade</option>
+                            <option value="2">2nd Grade</option>
+                            <option value="3">3rd Grade</option>
+                            <option value="4">4th Grade</option>
+                            <option value="5">5th Grade</option>
+                            <option value="6">6th Grade</option>
+                            <option value="7">7th Grade</option>
+                            <option value="8">8th Grade</option>
+                            <option value="9">9th Grade</option>
+                            <option value="10">10th Grade</option>
+                            <option value="11">11th Grade</option>
+                            <option value="12">12th Grade</option>
+                            <option value="Higher Ed">Higher Ed</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ops-gray-primary">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 2. Subject -->
@@ -161,8 +184,28 @@
                 <!-- 10. ELL Support -->
                 <div id="field-ell-support" class="field-container hidden">
                     <label for="ellSupport" class="block text-sm font-medium text-ops-gray-body mb-2">ELL / Language Support</label>
-                    <input type="text" id="ellSupport" placeholder="e.g. Visual aids, simplified vocabulary"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all">
+                    <div class="relative">
+                        <select id="ellSupport" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ops-primary focus:border-ops-primary outline-none transition-all appearance-none bg-white">
+                            <option value="">Select Language Support</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="French">French</option>
+                            <option value="Chinese (Mandarin)">Chinese (Mandarin)</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                            <option value="Portuguese">Portuguese</option>
+                            <option value="Russian">Russian</option>
+                            <option value="Haitian Creole">Haitian Creole</option>
+                            <option value="Korean">Korean</option>
+                            <option value="Tagalog">Tagalog</option>
+                            <option value="Visual Aids Only">Visual Aids Only</option>
+                            <option value="Simplified Vocabulary">Simplified Vocabulary</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-ops-gray-primary">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 11. Accommodations -->
