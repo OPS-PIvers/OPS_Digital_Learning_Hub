@@ -341,7 +341,10 @@
             Object.values(fieldMapping).forEach(mapping => {
                 const container = document.getElementById(mapping.containerId);
                 const input = document.getElementById(mapping.inputId);
-                if (container) container.classList.add('hidden');
+                if (container) {
+                    container.classList.add('hidden');
+                    container.classList.remove('flex');
+                }
                 if (input) {
                     if (input.type === 'checkbox') input.checked = false;
                     else if (input.type === 'range') input.value = 3;
@@ -350,13 +353,16 @@
             });
             updateSliderLabel(3);
 
-            // Determine which options to show
-            let optionsToShow = options ? options.split(',').map(o => o.trim()) : defaultOptions;
+            // Determine which options to show - handles empty/whitespace and case-insensitivity
+            let optionsToShow = (options && options.trim() !== "") ? options.split(',').map(o => o.trim()) : defaultOptions;
             activeFieldIds = [];
 
-            optionsToShow.forEach(optionName => {
-                const mapping = fieldMapping[optionName];
-                if (mapping) {
+            optionsToShow.forEach(rawOption => {
+                // Case-insensitive lookup against fieldMapping keys
+                const optionName = Object.keys(fieldMapping).find(k => k.toLowerCase() === rawOption.toLowerCase());
+
+                if (optionName) {
+                    const mapping = fieldMapping[optionName];
                     const container = document.getElementById(mapping.containerId);
                     if (container) {
                         container.classList.remove('hidden');
