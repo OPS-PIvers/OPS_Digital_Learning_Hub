@@ -310,21 +310,96 @@
         };
 
         const fieldMapping = {
-            'Grade Level': { containerId: 'field-grade-level', inputId: 'gradeLevel', label: 'Grade Level' },
-            'Subject': { containerId: 'field-subject', inputId: 'subject', label: 'Subject / Content Area' },
-            'Topic': { containerId: 'field-topic', inputId: 'topic', label: 'Topic / Learning Objective' },
-            'Additional Details': { containerId: 'field-additional-details', inputId: 'additionalInfo', label: 'Additional Details' },
-            'Level of Detail': { containerId: 'field-level-of-detail', inputId: 'detailSlider', label: 'Level of Detail' },
-            'Student Interests': { containerId: 'field-student-interests', inputId: 'interests', label: 'Student Interests' },
-            'Prior Knowledge': { containerId: 'field-prior-knowledge', inputId: 'priorKnowledge', label: 'Prior Knowledge' },
-            'Assessment Type': { containerId: 'field-assessment-type', inputId: 'assessmentType', label: 'Assessment Type' },
-            'Standards': { containerId: 'field-standards', inputId: 'standards', label: 'Standards' },
-            'ELL Support': { containerId: 'field-ell-support', inputId: 'ellSupport', label: 'ELL Support' },
-            'Accommodations': { containerId: 'field-accommodations', inputId: 'accommodations', label: 'Accommodations' },
-            'Tone/Style': { containerId: 'field-tone-style', inputId: 'toneStyle', label: 'Tone / Style' },
-            'Target Audience': { containerId: 'field-target-audience', inputId: 'targetAudience', label: 'Target Audience' },
-            'Output Format': { containerId: 'field-output-format', inputId: 'outputFormat', label: 'Output Format' },
-            'Resource': { containerId: 'field-resource', inputId: 'hasResource', label: 'Resource Attachment' }
+            'Grade Level': { 
+                containerId: 'field-grade-level', 
+                inputId: 'gradeLevel', 
+                label: 'Grade Level',
+                template: (val) => `The target audience for this resource is at the ${val} grade level.`
+            },
+            'Subject': { 
+                containerId: 'field-subject', 
+                inputId: 'subject', 
+                label: 'Subject / Content Area',
+                template: (val) => `This content falls within the subject area of ${val}.`
+            },
+            'Topic': { 
+                containerId: 'field-topic', 
+                inputId: 'topic', 
+                label: 'Topic / Learning Objective',
+                template: (val) => `The primary focus or learning objective is: ${val}.`
+            },
+            'Additional Details': { 
+                containerId: 'field-additional-details', 
+                inputId: 'additionalInfo', 
+                label: 'Additional Details',
+                template: (val) => `Please take into account these additional details: ${val}`
+            },
+            'Level of Detail': { 
+                containerId: 'field-level-of-detail', 
+                inputId: 'detailSlider', 
+                label: 'Level of Detail',
+                template: (val) => `The requested level of detail is: ${val}.`
+            },
+            'Student Interests': { 
+                containerId: 'field-student-interests', 
+                inputId: 'interests', 
+                label: 'Student Interests',
+                template: (val) => `Incorporate student interests such as ${val} to increase engagement.`
+            },
+            'Prior Knowledge': { 
+                containerId: 'field-prior-knowledge', 
+                inputId: 'priorKnowledge', 
+                label: 'Prior Knowledge',
+                template: (val) => `Students already have some background knowledge in: ${val}.`
+            },
+            'Assessment Type': { 
+                containerId: 'field-assessment-type', 
+                inputId: 'assessmentType', 
+                label: 'Assessment Type',
+                template: (val) => `The desired assessment method for this activity is: ${val}.`
+            },
+            'Standards': { 
+                containerId: 'field-standards', 
+                inputId: 'standards', 
+                label: 'Standards',
+                template: (val) => `This resource should align with the following educational standards: ${val}.`
+            },
+            'ELL Support': { 
+                containerId: 'field-ell-support', 
+                inputId: 'ellSupport', 
+                label: 'ELL Support',
+                template: (val) => `Provide specific supports for English Language Learners (ELL), focusing on: ${val}.`
+            },
+            'Accommodations': { 
+                containerId: 'field-accommodations', 
+                inputId: 'accommodations', 
+                label: 'Accommodations',
+                template: (val) => `Include necessary accommodations for students with diverse needs, specifically: ${val}.`
+            },
+            'Tone/Style': { 
+                containerId: 'field-tone-style', 
+                inputId: 'toneStyle', 
+                label: 'Tone / Style',
+                template: (val) => `The overall tone and communication style should be ${val}.`
+            },
+            'Target Audience': { 
+                containerId: 'field-target-audience', 
+                inputId: 'targetAudience', 
+                label: 'Target Audience',
+                template: (val) => `This material is specifically designed for ${val}.`
+            },
+            'Output Format': { 
+                containerId: 'field-output-format', 
+                inputId: 'outputFormat', 
+                label: 'Output Format',
+                template: (val) => `Please present the final output in the following format: ${val}.`
+            },
+            'Resource': { 
+                containerId: 'field-resource', 
+                inputId: 'hasResource', 
+                label: 'Resource Attachment',
+                template: (val) => val === 'Yes' ? 'I have a specific resource (text, image, or document) that I will provide for you to analyze or use.' : 'No external resource will be provided for this task.'
+            }
         };
 
         const defaultOptions = ['Grade Level', 'Subject', 'Topic', 'Additional Details', 'Level of Detail', 'Resource'];
@@ -397,29 +472,29 @@
                 if (input) {
                     let val = '';
                     if (input.type === 'checkbox') {
-                        val = input.checked ? 'I will provide a resource to attach.' : 'No additional resource will be provided.';
+                        val = input.checked ? 'Yes' : 'No';
                     } else if (input.type === 'range') {
                         val = detailLevels[input.value];
                     } else {
                         val = input.value.trim();
                     }
 
-                    if (val) {
-                        promptParts.push(`- **${mapping.label}:** ${val}`);
+                    if (val && mapping.template) {
+                        promptParts.push(mapping.template(val));
                     }
                 }
             });
 
             // Construct robust prompt
-            let finalPrompt = `I am using the "${currentGemTitle}" Gem to assist me. Here is the context for my request:` + nl + nl + `### Context` + nl;
+            let finalPrompt = `I am using the "${currentGemTitle}" Gem to assist me. Please act as an expert educational assistant to help me with the following task.` + nl + nl + `### Context & Requirements` + nl;
 
             if (promptParts.length > 0) {
-                finalPrompt += promptParts.join(nl);
+                finalPrompt += promptParts.join(' ' + nl);
             } else {
-                finalPrompt += "No specific context provided.";
+                finalPrompt += "Please use your general expertise to provide the best possible response for this Gem's purpose.";
             }
 
-            finalPrompt += nl + nl + `### Instructions` + nl + `Please use the context provided above to generate a high-quality, relevant response. Let's get started!`;
+            finalPrompt += nl + nl + `### Instructions` + nl + `Using the context and requirements provided above, generate a high-quality, professional, and pedagogically sound response that is ready for immediate use.`;
 
             if (currentTargetUrl) {
                 let baseUrl = currentTargetUrl;
